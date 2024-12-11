@@ -1,22 +1,32 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
+using Microsoft.Extensions.Configuration;
 using NewZealandWalks.API.Models.Domain;
+using SQLitePCL;
+using System.IO;
 
 namespace NewZealandWalks.API.Data
 {
     public class NZWalksDbContext : DbContext
     {
-        public NZWalksDbContext(DbContextOptions<NZWalksDbContext> dbContextOptions) : base(dbContextOptions)
-        {
 
+        public NZWalksDbContext()
+        {
+            Batteries.Init();
         }
 
-        public DbSet<Difficulty> Difficulty { get; set; }
+        public NZWalksDbContext(DbContextOptions<NZWalksDbContext> dbContextOptions) : base(dbContextOptions)
+        {
+        }
 
-        public DbSet<Region> Region { get; set; }
+        protected override void OnConfiguring(DbContextOptionsBuilder options)
+        {
+            if (!options.IsConfigured) // Évite de reconfigurer si les options sont déjà définies
+            {
+                options.UseSqlite("Data Source=NZWalksDb.sqlite");
+            }
+        }
 
-        public DbSet<Walk> Walks { get; set; }
-
-        public DbSet<Image> Images { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -45,8 +55,6 @@ namespace NewZealandWalks.API.Data
 
             // Seed difficulties to the database
             modelBuilder.Entity<Difficulty>().HasData(difficulties);
-
-
 
             // Seed data for Regions
             var regions = new List<Region>
@@ -97,6 +105,14 @@ namespace NewZealandWalks.API.Data
 
             modelBuilder.Entity<Region>().HasData(regions);
         }
+
+        public DbSet<Difficulty> Difficulty { get; set; }
+
+        public DbSet<Region> Region { get; set; }
+
+        public DbSet<Walk> Walks { get; set; }
+
+        public DbSet<Image> Images { get; set; }
 
     }
 }
