@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using NewZealandWalks.API.Data;
 using NewZealandWalks.API.Models.Domain;
 using NewZealandWalks.API.Models.DTO;
+using NewZealandWalks.API.Models.Mapping;
 
 namespace NewZealandWalks.API.Controllers
 {
@@ -32,21 +33,25 @@ namespace NewZealandWalks.API.Controllers
             //    new Region(){ Id = Guid.NewGuid(), Name="Wellington Region", Code="WLG", RegionImageUrl="https://wellington..." },
             //    new Region(){ Id = Guid.NewGuid(), Name="Jasper Region", Code="JSP", RegionImageUrl="https://jasper..." },
             //};
+            //return Ok(regions);
+
 
             var regionsDomain = _dbContext.Region.ToList();
 
             //TODO : ON NE DOIT JAMAIS RETOURNER DIRECTEMENT une classe du DOMAIN MODEL (Region)
             // ON DOI TOUJOURS RETOURNER UN DTO
-            var regionDto = new List<RegionDto>();
-            foreach (var r in regionsDomain)
-            {
-                regionDto.Add(new RegionDto() { Id = r.Id, Name = r.Name, Code = r.Code, RegionImageUrl = r.RegionImageUrl });
-            }
+            //var regionDto = new List<RegionDto>();
+            //foreach (var r in regionsDomain)
+            //{
+            //    regionDto.Add(new RegionDto() { Id = r.Id, Name = r.Name, Code = r.Code, RegionImageUrl = r.RegionImageUrl });
+            //}
+            //// Return DTOs
+            //return Ok(regionDto);
+
+            var regionDtoList = regionsDomain.Select(r => r.ToRegionDto());
 
             // Return DTOs
-            return Ok(regionDto);
-
-            //return Ok(regions);
+            return Ok(regionDtoList);
         }
 
 
@@ -69,7 +74,8 @@ namespace NewZealandWalks.API.Controllers
             //return Ok(regionDomain);
 
             //Map/Covert Region Domain Model to Region DTO
-            var regionDto = new RegionDto() { Id = regionDomain.Id, Name = regionDomain.Name, Code = regionDomain.Code, RegionImageUrl = regionDomain.RegionImageUrl };
+            //RegionDto regionDto = new RegionDto() { Id = regionDomain.Id, Name = regionDomain.Name, Code = regionDomain.Code, RegionImageUrl = regionDomain.RegionImageUrl };
+            RegionDto regionDto = regionDomain.ToRegionDto();
             return Ok(regionDto);
 
         }

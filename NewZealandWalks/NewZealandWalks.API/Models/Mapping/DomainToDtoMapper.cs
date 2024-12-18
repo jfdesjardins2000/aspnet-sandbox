@@ -3,6 +3,10 @@ using NewZealandWalks.API.Models.DTO;
 
 namespace NewZealandWalks.API.Models.Mapping
 {
+    /// <summary>
+    /// Stop Using AutoMapper in .NET
+    /// https://www.youtube.com/watch?v=RsnEZdc3MrE
+    /// </summary>
     public static class DomainToDtoMapper
     {
         public static RegionDto ToRegionDto(this Region region)
