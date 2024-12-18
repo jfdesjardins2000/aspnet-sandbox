@@ -2,8 +2,10 @@
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using NewZealandWalks.API.Data;
+using NewZealandWalks.API.Models.Contracts;
 using NewZealandWalks.API.Models.Domain;
 using NewZealandWalks.API.Models.DTO;
+using NewZealandWalks.API.Models.Mapping;
 
 namespace NewZealandWalks.API.Controllers
 {
@@ -22,7 +24,6 @@ namespace NewZealandWalks.API.Controllers
         // GET ALL REGIONS
         // GET: https://localhost:portnumber/api/regions
         [HttpGet]
-        //[Authorize(Roles = "Reader")]
         public IActionResult GetAll()
         {
             //// Get Data From Database - Domain models
@@ -32,29 +33,30 @@ namespace NewZealandWalks.API.Controllers
             //    new Region(){ Id = Guid.NewGuid(), Name="Wellington Region", Code="WLG", RegionImageUrl="https://wellington..." },
             //    new Region(){ Id = Guid.NewGuid(), Name="Jasper Region", Code="JSP", RegionImageUrl="https://jasper..." },
             //};
+            //return Ok(regions);
 
             var regionsDomain = _dbContext.Region.ToList();
 
             //TODO : ON NE DOIT JAMAIS RETOURNER DIRECTEMENT une classe du DOMAIN MODEL (Region)
             // ON DOI TOUJOURS RETOURNER UN DTO
-            var regionDto = new List<RegionDto>();
-            foreach (var r in regionsDomain)
-            {
-                regionDto.Add(new RegionDto() { Id = r.Id, Name = r.Name, Code = r.Code, RegionImageUrl = r.RegionImageUrl });
-            }
+            //var regionDto = new List<RegionDto>();
+            //foreach (var r in regionsDomain)
+            //{
+            //    regionDto.Add(new RegionDto() { Id = r.Id, Name = r.Name, Code = r.Code, RegionImageUrl = r.RegionImageUrl });
+            //}
+            //// Return DTOs
+            //return Ok(regionDto);
+
+            var regionDtoList = regionsDomain.Select(r => r.ToRegionDto());
 
             // Return DTOs
-            return Ok(regionDto);
-
-            //return Ok(regions);
+            return Ok(regionDtoList);
         }
-
 
         // GET SINGLE REGION (Get Region By ID)
         // GET: https://localhost:portnumber/api/regions/{id}
         [HttpGet]
         [Route("{id:Guid}")]
-        //[Authorize(Roles = "Reader")]
         public async Task<IActionResult> GetById([FromRoute] Guid id)
         {
             //var region = dbContext.Regions.Find(id);
@@ -69,9 +71,37 @@ namespace NewZealandWalks.API.Controllers
             //return Ok(regionDomain);
 
             //Map/Covert Region Domain Model to Region DTO
-            var regionDto = new RegionDto() { Id = regionDomain.Id, Name = regionDomain.Name, Code = regionDomain.Code, RegionImageUrl = regionDomain.RegionImageUrl };
+            //RegionDto regionDto = new RegionDto() { Id = regionDomain.Id, Name = regionDomain.Name, Code = regionDomain.Code, RegionImageUrl = regionDomain.RegionImageUrl };
+            RegionDto regionDto = regionDomain.ToRegionDto();
             return Ok(regionDto);
+        }
 
+        // POST To Create New Region
+        // POST: https://localhost:portnumber/api/regions
+        [HttpPost]
+        public IActionResult Create([FromBody] RegionCreateContract regionCreateContract)
+        {
+            // Map or Convert Contract to Domain Model
+            //Region regionDomainModel = new()
+            //{
+            //    Code = regionCreateContract.Code,
+            //    Name = regionCreateContract.Name,
+            //    RegionImageUrl = regionCreateContract.RegionImageUrl
+            //};
+
+            Region regionDomainModel = regionCreateContract.ToRegion();
+
+
+            // Use Domain Model to create Region
+            _dbContext.Region.Add(regionDomainModel);
+            _dbContext.SaveChanges();
+            //regionDomainModel = await regionRepository.CreateAsync(regionDomainModel);
+
+            // Map Domain model back to DTO
+            RegionDto regionDto = regionDomainModel.ToRegionDto();
+
+            //Retourne http code 201 et le Id
+            return CreatedAtAction(nameof(GetById), new { id = regionDto.Id }, regionDto);
         }
     }
 }
