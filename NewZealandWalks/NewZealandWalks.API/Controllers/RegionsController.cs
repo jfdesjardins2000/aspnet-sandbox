@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using NewZealandWalks.API.Data;
 using NewZealandWalks.API.Models.Domain;
+using NewZealandWalks.API.Models.DTO;
 
 namespace NewZealandWalks.API.Controllers
 {
@@ -31,10 +33,20 @@ namespace NewZealandWalks.API.Controllers
             //    new Region(){ Id = Guid.NewGuid(), Name="Jasper Region", Code="JSP", RegionImageUrl="https://jasper..." },
             //};
 
-            var regions = _dbContext.Region;
+            var regionsDomain = _dbContext.Region.ToList();
 
-            return Ok(regions);
+            //TODO : ON NE DOIT JAMAIS RETOURNER DIRECTEMENT une classe du DOMAIN MODEL (Region)
+            // ON DOI TOUJOURS RETOURNER UN DTO
+            var regionDto = new List<RegionDto>();
+            foreach (var r in regionsDomain)
+            {
+                regionDto.Add(new RegionDto() { Id = r.Id, Name = r.Name, Code = r.Code, RegionImageUrl = r.RegionImageUrl });
+            }
 
+            // Return DTOs
+            return Ok(regionDto);
+
+            //return Ok(regions);
         }
 
 
@@ -53,9 +65,13 @@ namespace NewZealandWalks.API.Controllers
             {
                 return NotFound();
             }
-
             // Return DTO back to client
-            return Ok(regionDomain);
+            //return Ok(regionDomain);
+
+            //Map/Covert Region Domain Model to Region DTO
+            var regionDto = new RegionDto() { Id = regionDomain.Id, Name = regionDomain.Name, Code = regionDomain.Code, RegionImageUrl = regionDomain.RegionImageUrl };
+            return Ok(regionDto);
+
         }
     }
 }
