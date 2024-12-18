@@ -5,7 +5,7 @@ namespace NewZealandWalks.API.Models.Mapping
 {
     public static class DtoToDomainMapper
     {
-        public static Region ToRegionDto(this RegionDto regionDto)
+        public static Region ToRegion(this RegionDto regionDto)
         {
             Region region =
                 new Region()
