@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using NewZealandWalks.API.Data;
-using NewZealandWalks.API.Models.Contracts;
 using NewZealandWalks.API.Models.Domain;
 using NewZealandWalks.API.Models.DTO;
 using NewZealandWalks.API.Models.Mapping;
@@ -79,7 +79,7 @@ namespace NewZealandWalks.API.Controllers
         // POST To Create New Region
         // POST: https://localhost:portnumber/api/regions
         [HttpPost]
-        public IActionResult Create([FromBody] RegionCreateContract regionCreateContract)
+        public IActionResult Create([FromBody] AddRegionRequestDto addRegionRequestDto)
         {
             // Map or Convert Contract to Domain Model
             //Region regionDomainModel = new()
@@ -89,7 +89,7 @@ namespace NewZealandWalks.API.Controllers
             //    RegionImageUrl = regionCreateContract.RegionImageUrl
             //};
 
-            Region regionDomainModel = regionCreateContract.ToRegion();
+            Region regionDomainModel = addRegionRequestDto.ToRegion();
 
 
             // Use Domain Model to create Region
@@ -103,5 +103,24 @@ namespace NewZealandWalks.API.Controllers
             //Retourne http code 201 et le Id
             return CreatedAtAction(nameof(GetById), new { id = regionDto.Id }, regionDto);
         }
+
+        //public IActionResult Update([FromRoute] Guid id, [FromBody] UpdateRegionRequestDto updateRegionRequestDto)
+        //{
+        //    var existingRegion = await dbContext.Regions.FirstOrDefaultAsync(x => x.Id == id);
+
+        //    if (existingRegion == null)
+        //    {
+        //        return null;
+        //    }
+
+        //    existingRegion.Code = region.Code;
+        //    existingRegion.Name = region.Name;
+        //    existingRegion.RegionImageUrl = region.RegionImageUrl;
+
+        //    await dbContext.SaveChangesAsync();
+        //    return existingRegion;
+
+        //}
+
     }
 }

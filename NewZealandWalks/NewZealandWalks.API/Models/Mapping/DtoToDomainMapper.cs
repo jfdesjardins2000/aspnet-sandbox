@@ -18,5 +18,21 @@ namespace NewZealandWalks.API.Models.Mapping
 
             return region;
         }
+
+
+        public static Region ToRegion(this AddRegionRequestDto addRegionRequestDto)
+        {
+            Region region =
+                new Region()
+                {
+                    //Id = regionCreateContract.Id,
+                    Name = addRegionRequestDto.Name,
+                    Code = addRegionRequestDto.Code,
+                    RegionImageUrl = addRegionRequestDto.RegionImageUrl
+                };
+
+            return region;
+        }
+
     }
 }
