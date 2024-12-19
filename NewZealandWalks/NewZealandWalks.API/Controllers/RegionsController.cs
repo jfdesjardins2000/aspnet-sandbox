@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using NewZealandWalks.API.Data;
-using NewZealandWalks.API.Models.Contracts;
 using NewZealandWalks.API.Models.Domain;
 using NewZealandWalks.API.Models.DTO;
 using NewZealandWalks.API.Models.Mapping;
@@ -79,18 +79,10 @@ namespace NewZealandWalks.API.Controllers
         // POST To Create New Region
         // POST: https://localhost:portnumber/api/regions
         [HttpPost]
-        public IActionResult Create([FromBody] RegionCreateContract regionCreateContract)
+        public IActionResult Create([FromBody] AddRegionRequestDto addRegionRequestDto)
         {
-            // Map or Convert Contract to Domain Model
-            //Region regionDomainModel = new()
-            //{
-            //    Code = regionCreateContract.Code,
-            //    Name = regionCreateContract.Name,
-            //    RegionImageUrl = regionCreateContract.RegionImageUrl
-            //};
-
-            Region regionDomainModel = regionCreateContract.ToRegion();
-
+            // Map or Convert DTO to Domain Model
+            Region regionDomainModel = addRegionRequestDto.ToRegion();
 
             // Use Domain Model to create Region
             _dbContext.Region.Add(regionDomainModel);
@@ -102,6 +94,47 @@ namespace NewZealandWalks.API.Controllers
 
             //Retourne http code 201 et le Id
             return CreatedAtAction(nameof(GetById), new { id = regionDto.Id }, regionDto);
+        }
+
+        [HttpPut]
+        [Route("{id:Guid}")]
+        public IActionResult Update([FromRoute] Guid id, [FromBody] UpdateRegionRequestDto updateRegionRequestDto)
+        {
+            var existingRegion = _dbContext.Region.FirstOrDefault(x => x.Id == id);
+
+            if (existingRegion == null)
+            {
+                return NotFound();
+            }
+
+            existingRegion.Code = updateRegionRequestDto.Code;
+            existingRegion.Name = updateRegionRequestDto.Name;
+            existingRegion.RegionImageUrl = updateRegionRequestDto.RegionImageUrl;
+
+            _dbContext.SaveChanges();
+
+            return Ok(existingRegion);
+        }
+
+        // Delete Region
+        // DELETE: https://localhost:portnumber/api/regions/{id}
+        [HttpDelete]
+        [Route("{id:Guid}")]
+        public async Task<IActionResult> Delete([FromRoute] Guid id)
+        {
+            Region? regionDomainModel = _dbContext.Region.FirstOrDefault(x => x.Id == id);
+
+            if (regionDomainModel == null)
+            {
+                return NotFound();
+            }
+
+            _dbContext.Region.Remove(regionDomainModel);
+            _dbContext.SaveChanges(true);
+
+            RegionDto regionDto = regionDomainModel.ToRegionDto();
+
+            return Ok(regionDto);
         }
     }
 }
