@@ -19,7 +19,6 @@ namespace NewZealandWalks.API.Models.Mapping
             return region;
         }
 
-
         public static Region ToRegion(this AddRegionRequestDto addRegionRequestDto)
         {
             Region region =
@@ -34,5 +33,18 @@ namespace NewZealandWalks.API.Models.Mapping
             return region;
         }
 
+        public static Region ToRegion(this UpdateRegionRequestDto updateRegionRequestDto)
+        {
+            Region region =
+                new Region()
+                {
+                    //Id = updateRegionRequestDto.Id,
+                    Name = updateRegionRequestDto.Name,
+                    Code = updateRegionRequestDto.Code,
+                    RegionImageUrl = updateRegionRequestDto.RegionImageUrl
+                };
+
+            return region;
+        }
     }
 }

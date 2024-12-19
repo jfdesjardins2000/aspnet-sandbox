@@ -1,6 +1,21 @@
-@NewZealandWalks.API_HostAddress = http://localhost:5148
+# @NewZealandWalks.API_HostAddress = http://localhost:5148
+@NewZealandWalks.API_HostAddress = https://localhost:7252
 
-GET {{NewZealandWalks.API_HostAddress}}/weatherforecast/
+GET {{NewZealandWalks.API_HostAddress}}/api/weatherforecast/
 Accept: application/json
 
 ###
+GET {{NewZealandWalks.API_HostAddress}}/api/Regions
+Accept: application/json
+
+###
+GET {{NewZealandWalks.API_HostAddress}}/api/Students
+Accept: application/json
+
+###
+DELETE {{NewZealandWalks.API_HostAddress}}/api/Regions/14ceba71-4b51-4777-9b17-46602cf66153
+Accept: application/json
+
+### DELETE BOSTON
+DELETE {{NewZealandWalks.API_HostAddress}}/api/Regions/295a5599-5160-4fb9-8d82-4a368797f0b5
+Accept: application/json
