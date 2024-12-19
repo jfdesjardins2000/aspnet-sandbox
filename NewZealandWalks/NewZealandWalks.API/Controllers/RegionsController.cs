@@ -76,33 +76,33 @@ namespace NewZealandWalks.API.Controllers
             return Ok(regionDto);
         }
 
-        // POST To Create New Region
-        // POST: https://localhost:portnumber/api/regions
-        [HttpPost]
-        public IActionResult Create([FromBody] AddRegionRequestDto addRegionRequestDto)
-        {
-            // Map or Convert Contract to Domain Model
-            //Region regionDomainModel = new()
-            //{
-            //    Code = regionCreateContract.Code,
-            //    Name = regionCreateContract.Name,
-            //    RegionImageUrl = regionCreateContract.RegionImageUrl
-            //};
+        //// POST To Create New Region
+        //// POST: https://localhost:portnumber/api/regions
+        //[HttpPost]
+        //public IActionResult Create([FromBody] AddRegionRequestDto addRegionRequestDto)
+        //{
+        //    // Map or Convert Contract to Domain Model
+        //    //Region regionDomainModel = new()
+        //    //{
+        //    //    Code = regionCreateContract.Code,
+        //    //    Name = regionCreateContract.Name,
+        //    //    RegionImageUrl = regionCreateContract.RegionImageUrl
+        //    //};
 
-            Region regionDomainModel = addRegionRequestDto.ToRegion();
+        //    Region regionDomainModel = addRegionRequestDto.ToRegion();
 
 
-            // Use Domain Model to create Region
-            _dbContext.Region.Add(regionDomainModel);
-            _dbContext.SaveChanges();
-            //regionDomainModel = await regionRepository.CreateAsync(regionDomainModel);
+        //    // Use Domain Model to create Region
+        //    _dbContext.Region.Add(regionDomainModel);
+        //    _dbContext.SaveChanges();
+        //    //regionDomainModel = await regionRepository.CreateAsync(regionDomainModel);
 
-            // Map Domain model back to DTO
-            RegionDto regionDto = regionDomainModel.ToRegionDto();
+        //    // Map Domain model back to DTO
+        //    RegionDto regionDto = regionDomainModel.ToRegionDto();
 
-            //Retourne http code 201 et le Id
-            return CreatedAtAction(nameof(GetById), new { id = regionDto.Id }, regionDto);
-        }
+        //    //Retourne http code 201 et le Id
+        //    return CreatedAtAction(nameof(GetById), new { id = regionDto.Id }, regionDto);
+        //}
 
         //public IActionResult Update([FromRoute] Guid id, [FromBody] UpdateRegionRequestDto updateRegionRequestDto)
         //{
