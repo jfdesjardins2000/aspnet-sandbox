@@ -1,3 +1,4 @@
+# https://learn.microsoft.com/en-us/aspnet/core/test/http-files?view=aspnetcore-9.0
 # @NewZealandWalks.API_HostAddress = http://localhost:5148
 @NewZealandWalks.API_HostAddress = https://localhost:7252
 
