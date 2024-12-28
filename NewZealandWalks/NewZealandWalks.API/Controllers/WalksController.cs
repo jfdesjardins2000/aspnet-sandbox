@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using NewZealandWalks.API.CustomActionFilters;
 using NewZealandWalks.API.Models.Domain;
 using NewZealandWalks.API.Models.DTO;
 using NewZealandWalks.API.Models.Mapping;
@@ -22,6 +23,7 @@ namespace NewZealandWalks.API.Controllers
         // CREATE Walk
         // POST: /api/walks
         [HttpPost]
+        [ValidateModel]
         public async Task<IActionResult> Create([FromBody] AddWalkRequestDto addWalkRequestDto)
         {
             // Map DTO to Domain Model
@@ -72,6 +74,7 @@ namespace NewZealandWalks.API.Controllers
         // Update Walk By Id
         // PUT: /api/Walks/{id}
         [HttpPut]
+        [ValidateModel]
         [Route("{id:Guid}")]
         public async Task<IActionResult> Update([FromRoute] Guid id, UpdateWalkRequestDto updateWalkRequestDto)
         {
