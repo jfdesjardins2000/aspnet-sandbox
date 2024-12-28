@@ -9,6 +9,18 @@ namespace NewZealandWalks.API.Models.Mapping
     /// </summary>
     public static class DomainToDtoMapper
     {
+
+        public static DifficultyDto ToDifficultyDto(this Difficulty difficulty)
+        {
+            DifficultyDto difficultyDto =
+                new DifficultyDto()
+                {
+                    Id = difficulty.Id,
+                    Name = difficulty.Name,
+                };
+            return difficultyDto;
+        }
+
         public static RegionDto ToRegionDto(this Region region)
         {
             RegionDto regionDto =
@@ -22,6 +34,22 @@ namespace NewZealandWalks.API.Models.Mapping
 
             return regionDto;
         }
+
+        public static WalkDto ToWalkDto(this Walk walk)
+        {
+            WalkDto walkDto =
+                new WalkDto()
+                {
+                    Id = walk.Id,
+                    Name = walk.Name,
+                    Description = walk.Description,
+                    LengthInKm = walk.LengthInKm,
+                    WalkImageUrl = walk.WalkImageUrl,
+                };
+            return walkDto;
+
+        }
+
 
     }
 }
