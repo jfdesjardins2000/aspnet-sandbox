@@ -48,7 +48,7 @@ namespace NewZealandWalks.API.Models.Mapping
 
             return region;
         }
-        #region
+        #endregion
 
         #region Walk
 
@@ -62,6 +62,21 @@ namespace NewZealandWalks.API.Models.Mapping
                 WalkImageUrl = addWalkRequestDto.WalkImageUrl,
                 DifficultyId = addWalkRequestDto.DifficultyId,
                 RegionId = addWalkRequestDto.RegionId
+            };
+
+            return walk;
+        }
+
+        public static Walk ToWalk(this UpdateWalkRequestDto updateWalkRequestDto)
+        {
+            Walk walk = new Walk()
+            {
+                Name = updateWalkRequestDto.Name,
+                Description = updateWalkRequestDto.Description,
+                LengthInKm = updateWalkRequestDto.LengthInKm,
+                WalkImageUrl = updateWalkRequestDto.WalkImageUrl,
+                DifficultyId = updateWalkRequestDto.DifficultyId,
+                RegionId = updateWalkRequestDto.RegionId
             };
 
             return walk;

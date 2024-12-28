@@ -19,7 +19,9 @@ string? connectionString = builder.Configuration.GetConnectionString("NZWalksCon
 builder.Services.AddDbContext<NZWalksDbContext>(options =>
     options.UseSqlite(connectionString));
 
+// Ajout des Repository
 builder.Services.AddScoped<IRegionRepository, SQLRegionRepository>();
+builder.Services.AddScoped<IWalkRepository, SQLWalkRepository>();
 
 
 var app = builder.Build();
