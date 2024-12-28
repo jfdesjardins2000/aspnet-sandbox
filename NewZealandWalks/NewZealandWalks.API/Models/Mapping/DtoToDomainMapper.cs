@@ -1,10 +1,12 @@
 ﻿using NewZealandWalks.API.Models.Domain;
 using NewZealandWalks.API.Models.DTO;
+using System.Runtime.CompilerServices;
 
 namespace NewZealandWalks.API.Models.Mapping
 {
     public static class DtoToDomainMapper
     {
+        #region Region
         public static Region ToRegion(this RegionDto regionDto)
         {
             Region region =
@@ -46,5 +48,40 @@ namespace NewZealandWalks.API.Models.Mapping
 
             return region;
         }
+        #endregion
+
+        #region Walk
+
+        public static Walk ToWalk(this AddWalkRequestDto addWalkRequestDto)
+        {
+            Walk walk = new Walk()
+            {
+                Name = addWalkRequestDto.Name,
+                Description = addWalkRequestDto.Description,
+                LengthInKm = addWalkRequestDto.LengthInKm,
+                WalkImageUrl = addWalkRequestDto.WalkImageUrl,
+                DifficultyId = addWalkRequestDto.DifficultyId,
+                RegionId = addWalkRequestDto.RegionId
+            };
+
+            return walk;
+        }
+
+        public static Walk ToWalk(this UpdateWalkRequestDto updateWalkRequestDto)
+        {
+            Walk walk = new Walk()
+            {
+                Name = updateWalkRequestDto.Name,
+                Description = updateWalkRequestDto.Description,
+                LengthInKm = updateWalkRequestDto.LengthInKm,
+                WalkImageUrl = updateWalkRequestDto.WalkImageUrl,
+                DifficultyId = updateWalkRequestDto.DifficultyId,
+                RegionId = updateWalkRequestDto.RegionId
+            };
+
+            return walk;
+        }
+
+        #endregion
     }
 }

@@ -9,7 +9,6 @@ namespace NewZealandWalks.API.Models.Mapping
     /// </summary>
     public static class DomainToDtoMapper
     {
-
         public static DifficultyDto ToDifficultyDto(this Difficulty difficulty)
         {
             DifficultyDto difficultyDto =
@@ -45,11 +44,12 @@ namespace NewZealandWalks.API.Models.Mapping
                     Description = walk.Description,
                     LengthInKm = walk.LengthInKm,
                     WalkImageUrl = walk.WalkImageUrl,
+                    RegionID = walk.RegionId,
+                    DifficultyId = walk.DifficultyId,
+                    Region = walk.Region,
+                    Difficulty = walk.Difficulty
                 };
             return walkDto;
-
         }
-
-
     }
 }
