@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using NewZealandWalks.API;
 using NewZealandWalks.API.Data;
+using NewZealandWalks.API.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +18,8 @@ string? connectionString = builder.Configuration.GetConnectionString("NZWalksCon
 // Configurer la chaîne de connexion pour SQLite
 builder.Services.AddDbContext<NZWalksDbContext>(options =>
     options.UseSqlite(connectionString));
+
+builder.Services.AddScoped<IRegionRepository, SQLRegionRepository>();
 
 
 var app = builder.Build();
