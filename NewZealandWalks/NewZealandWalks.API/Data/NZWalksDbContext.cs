@@ -19,6 +19,14 @@ namespace NewZealandWalks.API.Data
         {
         }
 
+        public DbSet<Difficulty> Difficulty { get; set; }
+
+        public DbSet<Region> Region { get; set; }
+
+        public DbSet<Walk> Walks { get; set; }
+
+        public DbSet<Image> Images { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
             if (!options.IsConfigured) // Évite de reconfigurer si les options sont déjà définies
@@ -106,13 +114,7 @@ namespace NewZealandWalks.API.Data
             modelBuilder.Entity<Region>().HasData(regions);
         }
 
-        public DbSet<Difficulty> Difficulty { get; set; }
 
-        public DbSet<Region> Region { get; set; }
-
-        public DbSet<Walk> Walks { get; set; }
-
-        public DbSet<Image> Images { get; set; }
 
     }
 }
