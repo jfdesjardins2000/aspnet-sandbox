@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using NewZealandWalks.API.Models.DTO;
+using NewZealandWalks.API.Repositories;
+using System.Data;
 
 namespace NewZealandWalks.API.Controllers
 {
@@ -10,10 +12,12 @@ namespace NewZealandWalks.API.Controllers
     public class AuthController : ControllerBase
     {
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly ITokenRepository _tokenRepository;
 
-        public AuthController(UserManager<IdentityUser> userManager)
+        public AuthController(UserManager<IdentityUser> userManager, ITokenRepository tokenRepository)
         {
             _userManager = userManager;
+            _tokenRepository = tokenRepository;
         }
 
         /// <summary>
@@ -64,9 +68,21 @@ namespace NewZealandWalks.API.Controllers
 
                 if (checkPasswordResult)
                 {
-                    // Create Token
+                    // Get Roles for this user
+                    var roles = await _userManager.GetRolesAsync(user);
 
-                    return Ok();
+                    if (roles != null)
+                    {
+                        // Create Token
+                        var jwtToken = _tokenRepository.CreateJWTToken(user, roles.ToList());
+
+                        LoginResponseDto response = new LoginResponseDto
+                        {
+                            JwtToken = jwtToken
+                        };
+
+                        return Ok(response);
+                    }
                 }
             }
 
