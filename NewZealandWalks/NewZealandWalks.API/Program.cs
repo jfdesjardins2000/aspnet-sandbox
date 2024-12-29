@@ -19,8 +19,10 @@ builder.Services.AddSwaggerGen();
 // Récupérer le chemin depuis appsettings.json
 string? connectionString = builder.Configuration.GetConnectionString("NZWalksConnectionString");
 // Configurer la chaîne de connexion pour SQLite
-builder.Services.AddDbContext<NZWalksDbContext>(options =>
-    options.UseSqlite(connectionString));
+builder.Services.AddDbContext<NZWalksDbContext>(options => options.UseSqlite(connectionString));
+
+string? authConnectionString = builder.Configuration.GetConnectionString("NZWalksAuthConnectionString");
+builder.Services.AddDbContext<NZWalksAuthDbContext>(options => options.UseSqlite(authConnectionString));
 
 // Ajout des Repository
 builder.Services.AddScoped<IRegionRepository, SQLRegionRepository>();
