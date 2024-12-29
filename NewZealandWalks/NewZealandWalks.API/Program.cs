@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using NewZealandWalks.API;
@@ -18,15 +19,36 @@ builder.Services.AddSwaggerGen();
 
 // Récupérer le chemin depuis appsettings.json
 string? connectionString = builder.Configuration.GetConnectionString("NZWalksConnectionString");
-// Configurer la chaîne de connexion pour SQLite
+
+// Configurer la chaîne de connexion pour la BD SQLite Business
 builder.Services.AddDbContext<NZWalksDbContext>(options => options.UseSqlite(connectionString));
 
+// Configurer la chaîne de connexion pour la BD SQLite Authentication
 string? authConnectionString = builder.Configuration.GetConnectionString("NZWalksAuthConnectionString");
 builder.Services.AddDbContext<NZWalksAuthDbContext>(options => options.UseSqlite(authConnectionString));
 
 // Ajout des Repository
 builder.Services.AddScoped<IRegionRepository, SQLRegionRepository>();
 builder.Services.AddScoped<IWalkRepository, SQLWalkRepository>();
+
+// Configuration du Service Identity
+builder.Services.AddIdentityCore<IdentityUser>()
+    .AddRoles<IdentityRole>()
+    .AddTokenProvider<DataProtectorTokenProvider<IdentityUser>>("NzWalks")
+    .AddEntityFrameworkStores<NZWalksAuthDbContext>()
+    .AddDefaultTokenProviders();
+
+// Configuration du password possible
+builder.Services.Configure<IdentityOptions>(options =>
+{
+    options.Password.RequireDigit = false;
+    options.Password.RequireLowercase = false;
+    options.Password.RequireUppercase = false;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequiredLength = 6;
+    options.Password.RequiredUniqueChars = 1;
+});
+
 
 //On ajoute l'Authentication JWT
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
