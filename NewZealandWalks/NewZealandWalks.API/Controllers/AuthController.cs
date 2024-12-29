@@ -9,14 +9,19 @@ namespace NewZealandWalks.API.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private readonly UserManager<IdentityUser> userManager;
+        private readonly UserManager<IdentityUser> _userManager;
 
         public AuthController(UserManager<IdentityUser> userManager)
         {
-            this.userManager = userManager;
+            _userManager = userManager;
         }
 
-        // POST: /API/Auth/Register
+        /// <summary>
+        /// POST: /API/Auth/Register
+        /// Permet d'enregister un nouvel utilisateur dans notre systeme
+        /// </summary>
+        /// <param name="registerRequestDto"></param>
+        /// <returns></returns>
         [HttpPost]
         [Route("Register")]
         public async Task<IActionResult> Register([FromBody] RegisterRequestDto registerRequestDto)
@@ -27,14 +32,14 @@ namespace NewZealandWalks.API.Controllers
                 Email = registerRequestDto.Username
             };
 
-            var identityResult = await userManager.CreateAsync(identityUser, registerRequestDto.Password);
+            var identityResult = await _userManager.CreateAsync(identityUser, registerRequestDto.Password);
 
             if (identityResult.Succeeded)
             {
                 // Add roles to this user
                 if (registerRequestDto.Roles != null && registerRequestDto.Roles.Any())
                 {
-                    identityResult = await userManager.AddToRolesAsync(identityUser, registerRequestDto.Roles);
+                    identityResult = await _userManager.AddToRolesAsync(identityUser, registerRequestDto.Roles);
 
                     if (identityResult.Succeeded)
                     {
@@ -44,6 +49,28 @@ namespace NewZealandWalks.API.Controllers
             }
 
             return BadRequest("Something went wrong!");
+        }
+
+        // POST: /api/Auth/Login
+        [HttpPost]
+        [Route("Login")]
+        public async Task<IActionResult> Login([FromBody] LoginRequestDto loginRequestDto)
+        {
+            var user = await _userManager.FindByEmailAsync(loginRequestDto.Username);
+
+            if (user != null)
+            {
+                bool checkPasswordResult = await _userManager.CheckPasswordAsync(user, loginRequestDto.Password);
+
+                if (checkPasswordResult)
+                {
+                    // Create Token
+
+                    return Ok();
+                }
+            }
+
+            return BadRequest("Username or password incorrect");
         }
     }
 }
