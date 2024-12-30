@@ -42,7 +42,8 @@ namespace NewZealandWalks.API.Repositories
 
         public async Task<Region?> GetByIdAsync(Guid id)
         {
-            return await _dbContext.Region.FirstOrDefaultAsync(x => x.Id == id);
+            var region = await _dbContext.Region.FirstOrDefaultAsync(x => x.Id == id);
+            return region;
         }
 
         public async Task<Region?> UpdateAsync(Guid id, Region region)

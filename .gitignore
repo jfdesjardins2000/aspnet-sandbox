@@ -266,6 +266,10 @@ ServiceFabricBackup/
 *.ldf
 *.ndf
 
+# SQLITE files
+*.sqlite-shm
+*.sqlite-wal
+
 # Business Intelligence projects
 *.rdl.data
 *.bim.layout
@@ -361,3 +365,6 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+# SeriLog
+Logs/log-*.log

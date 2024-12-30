@@ -38,7 +38,28 @@ namespace NewZealandWalks.API.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            // Permet de convertir du type GUID dans les classes C# vers le type TEXT des tables Sqlite.
+            var converter = new GuidToStringConverter();
+
+            foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+            {
+                var properties = entityType.ClrType.GetProperties()
+                    .Where(p => p.PropertyType == typeof(Guid) || p.PropertyType == typeof(Guid?));
+
+                foreach (var property in properties)
+                {
+                    modelBuilder.Entity(entityType.Name)
+                        .Property(property.Name)
+                        .HasConversion(converter)
+                        .HasColumnType("TEXT");
+                }
+            }
+
+
+
             base.OnModelCreating(modelBuilder);
+
+
 
             // Seed data for Difficulties
             // Easy, Medium, Hard
