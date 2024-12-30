@@ -3,34 +3,51 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-
-using NewZealandWalks.API;
 using NewZealandWalks.API.Data;
 using NewZealandWalks.API.Repositories;
+using Serilog;
 using System.Text;
 
-var builder = WebApplication.CreateBuilder(args);
-
-// Add services to the container.
-
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-
-//Configuration de Swagger pour permettre l'Authentication JWT (Bearer Token)
-builder.Services.AddSwaggerGen(options =>
+internal class Program
 {
-    options.SwaggerDoc("v1", new OpenApiInfo { Title = "NZ Walks API", Version = "v1" });
-    options.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, new OpenApiSecurityScheme
+    private static void Main(string[] args)
     {
-        Name = "Authorization",
-        In = ParameterLocation.Header,
-        Type = SecuritySchemeType.ApiKey,
-        Scheme = JwtBearerDefaults.AuthenticationScheme
-    });
+        var builder = WebApplication.CreateBuilder(args);
 
-    options.AddSecurityRequirement(new OpenApiSecurityRequirement
-    {
+        // Configure Serilog
+        Log.Logger = new LoggerConfiguration()
+            .MinimumLevel.Information()
+            .Enrich.FromLogContext()
+            .WriteTo.Console()
+            .WriteTo.File(
+                path: "Logs/log-.log",
+                rollingInterval: RollingInterval.Day,
+                retainedFileCountLimit: 1,
+                outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}")
+            .CreateLogger();
+
+        // Intégration avec ASP.NET Core
+        builder.Host.UseSerilog();
+
+        // Add services to the container.
+        builder.Services.AddControllers();
+        // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+        builder.Services.AddEndpointsApiExplorer();
+
+        // Configuration de Swagger pour permettre l'Authentication JWT (Bearer Token)
+        builder.Services.AddSwaggerGen(options =>
+        {
+            options.SwaggerDoc("v1", new OpenApiInfo { Title = "NZ Walks API", Version = "v1" });
+            options.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, new OpenApiSecurityScheme
+            {
+                Name = "Authorization",
+                In = ParameterLocation.Header,
+                Type = SecuritySchemeType.ApiKey,
+                Scheme = JwtBearerDefaults.AuthenticationScheme
+            });
+
+            options.AddSecurityRequirement(new OpenApiSecurityRequirement
+            {
         {
             new OpenApiSecurityScheme
             {
@@ -44,80 +61,74 @@ builder.Services.AddSwaggerGen(options =>
                  In = ParameterLocation.Header
             },
             new List<string>()
-
         }
-    });
-});
+            });
+        });
 
+        // Récupérer le chemin depuis appsettings.json
+        string? connectionString = builder.Configuration.GetConnectionString("NZWalksConnectionString");
 
+        // Configurer la chaîne de connexion pour la BD SQLite Business
+        builder.Services.AddDbContext<NZWalksDbContext>(options => options.UseSqlite(connectionString));
 
+        // Configurer la chaîne de connexion pour la BD SQLite Authentication
+        string? authConnectionString = builder.Configuration.GetConnectionString("NZWalksAuthConnectionString");
+        builder.Services.AddDbContext<NZWalksAuthDbContext>(options => options.UseSqlite(authConnectionString));
 
+        // Ajout des Repository
+        builder.Services.AddScoped<IRegionRepository, SQLRegionRepository>();
+        builder.Services.AddScoped<IWalkRepository, SQLWalkRepository>();
+        builder.Services.AddScoped<ITokenRepository, TokenRepository>();
 
-// Récupérer le chemin depuis appsettings.json
-string? connectionString = builder.Configuration.GetConnectionString("NZWalksConnectionString");
+        // Configuration du Service Identity
+        builder.Services.AddIdentityCore<IdentityUser>()
+            .AddRoles<IdentityRole>()
+            .AddTokenProvider<DataProtectorTokenProvider<IdentityUser>>("NzWalks")
+            .AddEntityFrameworkStores<NZWalksAuthDbContext>()
+            .AddDefaultTokenProviders();
 
-// Configurer la chaîne de connexion pour la BD SQLite Business
-builder.Services.AddDbContext<NZWalksDbContext>(options => options.UseSqlite(connectionString));
+        // Configuration du password possible
+        builder.Services.Configure<IdentityOptions>(options =>
+        {
+            options.Password.RequireDigit = false;
+            options.Password.RequireLowercase = false;
+            options.Password.RequireUppercase = false;
+            options.Password.RequireNonAlphanumeric = false;
+            options.Password.RequiredLength = 6;
+            options.Password.RequiredUniqueChars = 1;
+        });
 
-// Configurer la chaîne de connexion pour la BD SQLite Authentication
-string? authConnectionString = builder.Configuration.GetConnectionString("NZWalksAuthConnectionString");
-builder.Services.AddDbContext<NZWalksAuthDbContext>(options => options.UseSqlite(authConnectionString));
+        // Ajout de l'Authentication JWT (Version 1)
+        builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(options =>
+            options.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateLifetime = true,
+                ValidateIssuerSigningKey = true,
+                ValidIssuer = builder.Configuration["Jwt:Issuer"],
+                ValidAudience = builder.Configuration["Jwt:Audience"],
+                IssuerSigningKey = new SymmetricSecurityKey(
+                    Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+            });
 
-// Ajout des Repository
-builder.Services.AddScoped<IRegionRepository, SQLRegionRepository>();
-builder.Services.AddScoped<IWalkRepository, SQLWalkRepository>();
-builder.Services.AddScoped<ITokenRepository, TokenRepository>();
+        var app = builder.Build();
 
-// Configuration du Service Identity
-builder.Services.AddIdentityCore<IdentityUser>()
-    .AddRoles<IdentityRole>()
-    .AddTokenProvider<DataProtectorTokenProvider<IdentityUser>>("NzWalks")
-    .AddEntityFrameworkStores<NZWalksAuthDbContext>()
-    .AddDefaultTokenProviders();
+        // Configure the HTTP request pipeline.
+        if (app.Environment.IsDevelopment())
+        {
+            app.UseSwagger();
+            app.UseSwaggerUI();
+        }
 
-// Configuration du password possible
-builder.Services.Configure<IdentityOptions>(options =>
-{
-    options.Password.RequireDigit = false;
-    options.Password.RequireLowercase = false;
-    options.Password.RequireUppercase = false;
-    options.Password.RequireNonAlphanumeric = false;
-    options.Password.RequiredLength = 6;
-    options.Password.RequiredUniqueChars = 1;
-});
+        app.UseHttpsRedirection();
 
+        app.UseAuthentication();
+        app.UseAuthorization();
 
-//On ajoute l'Authentication JWT (Version 1)
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(options =>
-    options.TokenValidationParameters = new TokenValidationParameters
-    {
-        ValidateIssuer = true,
-        ValidateAudience = true,
-        ValidateLifetime = true,
-        ValidateIssuerSigningKey = true,
-        ValidIssuer = builder.Configuration["Jwt:Issuer"],
-        ValidAudience = builder.Configuration["Jwt:Audience"],
-        IssuerSigningKey = new SymmetricSecurityKey(
-            Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
-    });
+        app.MapControllers();
 
-
-
-var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
+        app.Run();
+    }
 }
-
-app.UseHttpsRedirection();
-
-app.UseAuthentication();
-app.UseAuthorization();
-
-app.MapControllers();
-
-app.Run();

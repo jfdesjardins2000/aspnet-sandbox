@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using NewZealandWalks.API.Models.DTO;
 using NewZealandWalks.API.Repositories;
+using Serilog;
 using System.Data;
 
 namespace NewZealandWalks.API.Controllers
@@ -13,11 +14,13 @@ namespace NewZealandWalks.API.Controllers
     {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly ITokenRepository _tokenRepository;
+        //private readonly ILogger<AuthController> _logger;
 
         public AuthController(UserManager<IdentityUser> userManager, ITokenRepository tokenRepository)
         {
             _userManager = userManager;
             _tokenRepository = tokenRepository;
+            //_logger = logger;
         }
 
         /// <summary>
@@ -30,6 +33,11 @@ namespace NewZealandWalks.API.Controllers
         [Route("Register")]
         public async Task<IActionResult> Register([FromBody] RegisterRequestDto registerRequestDto)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var identityUser = new IdentityUser
             {
                 UserName = registerRequestDto.Username,
@@ -40,19 +48,23 @@ namespace NewZealandWalks.API.Controllers
 
             if (identityResult.Succeeded)
             {
-                // Add roles to this user
                 if (registerRequestDto.Roles != null && registerRequestDto.Roles.Any())
                 {
                     identityResult = await _userManager.AddToRolesAsync(identityUser, registerRequestDto.Roles);
 
                     if (identityResult.Succeeded)
                     {
-                        return Ok("User was registered! Please login. ");
+                        return Ok("User was registered! Please login.");
                     }
+                }
+                else
+                {
+                    return Ok("User was registered! Please login.");
                 }
             }
 
-            return BadRequest("Something went wrong!");
+            Log.Error("User registration failed: {Errors}", string.Join(", ", identityResult.Errors.Select(e => e.Description)));
+            return BadRequest("User registration failed.");
         }
 
         // POST: /api/Auth/Login
@@ -60,6 +72,11 @@ namespace NewZealandWalks.API.Controllers
         [Route("Login")]
         public async Task<IActionResult> Login([FromBody] LoginRequestDto loginRequestDto)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var user = await _userManager.FindByEmailAsync(loginRequestDto.Username);
 
             if (user != null)
@@ -68,12 +85,10 @@ namespace NewZealandWalks.API.Controllers
 
                 if (checkPasswordResult)
                 {
-                    // Get Roles for this user
                     IList<string> roles = await _userManager.GetRolesAsync(user);
 
                     if (roles != null)
                     {
-                        // Create JWT Token
                         string jwtToken = _tokenRepository.CreateJWTToken(user, roles.ToList());
 
                         LoginResponseDto loginResponseDto = new LoginResponseDto
@@ -86,7 +101,8 @@ namespace NewZealandWalks.API.Controllers
                 }
             }
 
-            return BadRequest("Username or password incorrect");
+            Log.Warning("Login failed for user: {Username}", loginRequestDto.Username);
+            return Unauthorized("Username or password incorrect.");
         }
     }
 }
