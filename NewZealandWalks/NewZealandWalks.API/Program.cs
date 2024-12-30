@@ -30,6 +30,7 @@ builder.Services.AddDbContext<NZWalksAuthDbContext>(options => options.UseSqlite
 // Ajout des Repository
 builder.Services.AddScoped<IRegionRepository, SQLRegionRepository>();
 builder.Services.AddScoped<IWalkRepository, SQLWalkRepository>();
+builder.Services.AddScoped<ITokenRepository, TokenRepository>();
 
 // Configuration du Service Identity
 builder.Services.AddIdentityCore<IdentityUser>()
@@ -50,7 +51,7 @@ builder.Services.Configure<IdentityOptions>(options =>
 });
 
 
-//On ajoute l'Authentication JWT
+//On ajoute l'Authentication JWT (Version 1)
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     options.TokenValidationParameters = new TokenValidationParameters
@@ -64,6 +65,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         IssuerSigningKey = new SymmetricSecurityKey(
             Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
     });
+
+
 
 var app = builder.Build();
 

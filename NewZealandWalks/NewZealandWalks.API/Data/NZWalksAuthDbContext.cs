@@ -18,6 +18,9 @@ namespace NewZealandWalks.API.Data
         {
             base.OnModelCreating(builder);
 
+            // Role
+            // C'est ici qu'on défini les Roles possibles (Reader et Writer)
+
             var readerRoleId = "5a16e510-a196-4f74-a08f-504042bd0164";
             var writerRoleId = "4b56fc29-4710-4f88-8af0-f0f3f387fdc4";
 

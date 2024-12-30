@@ -69,19 +69,19 @@ namespace NewZealandWalks.API.Controllers
                 if (checkPasswordResult)
                 {
                     // Get Roles for this user
-                    var roles = await _userManager.GetRolesAsync(user);
+                    IList<string> roles = await _userManager.GetRolesAsync(user);
 
                     if (roles != null)
                     {
-                        // Create Token
-                        var jwtToken = _tokenRepository.CreateJWTToken(user, roles.ToList());
+                        // Create JWT Token
+                        string jwtToken = _tokenRepository.CreateJWTToken(user, roles.ToList());
 
-                        LoginResponseDto response = new LoginResponseDto
+                        LoginResponseDto loginResponseDto = new LoginResponseDto
                         {
                             JwtToken = jwtToken
                         };
 
-                        return Ok(response);
+                        return Ok(loginResponseDto);
                     }
                 }
             }
