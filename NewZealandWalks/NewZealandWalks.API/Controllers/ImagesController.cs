@@ -2,6 +2,7 @@
 using NewZealandWalks.API.Models.Domain;
 using NewZealandWalks.API.Models.DTO;
 using NewZealandWalks.API.Models.Mapping;
+using NewZealandWalks.API.Repositories;
 
 
 namespace NewZealandWalks.API.Controllers
@@ -11,9 +12,11 @@ namespace NewZealandWalks.API.Controllers
     [ApiController]
     public class ImagesController : ControllerBase
     {
-        public ImagesController()
-        {
+        private readonly IImageRepository _imageRepository;
 
+        public ImagesController(IImageRepository imageRepository)
+        {
+            this._imageRepository = imageRepository;
         }
 
         // POST: /api/Images/Upload
@@ -30,7 +33,7 @@ namespace NewZealandWalks.API.Controllers
 
 
                 // User repository to upload image
-                // await imageRepository.Upload(imageDomainModel);
+                await _imageRepository.Upload(imageDomainModel);
 
                 return Ok(imageDomainModel);
 
