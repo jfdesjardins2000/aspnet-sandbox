@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using NewZealandWalks.API.Data;
@@ -31,6 +32,8 @@ internal class Program
 
         // Add services to the container.
         builder.Services.AddControllers();
+        builder.Services.AddHttpContextAccessor();
+
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
 
@@ -79,6 +82,7 @@ internal class Program
         builder.Services.AddScoped<IRegionRepository, SQLRegionRepository>();
         builder.Services.AddScoped<IWalkRepository, SQLWalkRepository>();
         builder.Services.AddScoped<ITokenRepository, TokenRepository>();
+        builder.Services.AddScoped<IImageRepository, LocalImageRepository>();
 
         // Configuration du Service Identity
         builder.Services.AddIdentityCore<IdentityUser>()
@@ -113,7 +117,7 @@ internal class Program
                     Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
             });
 
-        var app = builder.Build();
+        WebApplication app = builder.Build();
 
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
@@ -126,6 +130,15 @@ internal class Program
 
         app.UseAuthentication();
         app.UseAuthorization();
+
+        //Permet de pouvoir servir des objets static tel que des images  trouvé dans le
+        //dossier C:\Logiciels\_SampleDev\LearnAspNetCore\aspnet-sandbox\NewZealandWalks\NewZealandWalks.API\Images\
+        // par exemple : https://localhost:7252/Images/JFD.jpg
+        app.UseStaticFiles(new StaticFileOptions
+        {
+            FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "Images")),
+            RequestPath = "/Images"
+        });
 
         app.MapControllers();
 
