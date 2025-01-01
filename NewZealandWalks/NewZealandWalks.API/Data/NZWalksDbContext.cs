@@ -9,7 +9,6 @@ namespace NewZealandWalks.API.Data
 {
     public class NZWalksDbContext : DbContext
     {
-
         public NZWalksDbContext()
         {
             Batteries.Init();
@@ -35,7 +34,6 @@ namespace NewZealandWalks.API.Data
             }
         }
 
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // Permet de convertir du type GUID dans les classes C# vers le type TEXT des tables Sqlite.
@@ -55,11 +53,7 @@ namespace NewZealandWalks.API.Data
                 }
             }
 
-
-
             base.OnModelCreating(modelBuilder);
-
-
 
             // Seed data for Difficulties
             // Easy, Medium, Hard
@@ -134,8 +128,5 @@ namespace NewZealandWalks.API.Data
 
             modelBuilder.Entity<Region>().HasData(regions);
         }
-
-
-
     }
 }
