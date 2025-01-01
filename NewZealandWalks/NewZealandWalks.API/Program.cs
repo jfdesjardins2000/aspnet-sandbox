@@ -5,9 +5,12 @@ using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using NewZealandWalks.API.Data;
+using NewZealandWalks.API.MiddleWares;
 using NewZealandWalks.API.Repositories;
 using Serilog;
+using System.Numerics;
 using System.Text;
+using static System.Net.Mime.MediaTypeNames;
 
 internal class Program
 {
@@ -15,7 +18,7 @@ internal class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        // Configure Serilog
+        //1. * *Première approche(Static) * * :
         Log.Logger = new LoggerConfiguration()
             .MinimumLevel.Information()
             .Enrich.FromLogContext()
@@ -29,6 +32,23 @@ internal class Program
 
         // Intégration avec ASP.NET Core
         builder.Host.UseSerilog();
+
+
+        // 2. * *Deuxième approche(DI) * * :
+        var logger = new LoggerConfiguration()
+            .MinimumLevel.Information()
+            .Enrich.FromLogContext()
+            .WriteTo.Console()
+            .WriteTo.File(
+                path: "Logs/log-.log",
+                rollingInterval: RollingInterval.Day,
+                retainedFileCountLimit: 1,
+                outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}")
+            .CreateLogger();
+
+        builder.Logging.ClearProviders();
+        builder.Logging.AddSerilog(logger);
+
 
         // Add services to the container.
         builder.Services.AddControllers();
@@ -119,12 +139,16 @@ internal class Program
 
         WebApplication app = builder.Build();
 
+        // La Section qui suit sert a configurer les MiddleWare
+
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
         {
             app.UseSwagger();
             app.UseSwaggerUI();
         }
+
+        app.UseMiddleware<GlobalExceptionHandler>();
 
         app.UseHttpsRedirection();
 

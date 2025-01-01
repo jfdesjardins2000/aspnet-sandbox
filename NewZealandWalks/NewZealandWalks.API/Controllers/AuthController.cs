@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using NewZealandWalks.API.Models.DTO;
 using NewZealandWalks.API.Repositories;
-using Serilog;
+//using Serilog;
 using System.Data;
 
 namespace NewZealandWalks.API.Controllers
@@ -14,13 +14,13 @@ namespace NewZealandWalks.API.Controllers
     {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly ITokenRepository _tokenRepository;
-        //private readonly ILogger<AuthController> _logger;
+        private readonly ILogger<AuthController> _log;
 
-        public AuthController(UserManager<IdentityUser> userManager, ITokenRepository tokenRepository)
+        public AuthController(UserManager<IdentityUser> userManager, ITokenRepository tokenRepository, ILogger<AuthController> logger)
         {
             _userManager = userManager;
             _tokenRepository = tokenRepository;
-            //_logger = logger;
+            _log = logger;
         }
 
         /// <summary>
@@ -63,7 +63,7 @@ namespace NewZealandWalks.API.Controllers
                 }
             }
 
-            Log.Error("User registration failed: {Errors}", string.Join(", ", identityResult.Errors.Select(e => e.Description)));
+            _log.LogError("User registration failed: {Errors}", string.Join(", ", identityResult.Errors.Select(e => e.Description)));
             return BadRequest("User registration failed.");
         }
 
@@ -101,7 +101,7 @@ namespace NewZealandWalks.API.Controllers
                 }
             }
 
-            Log.Warning("Login failed for user: {Username}", loginRequestDto.Username);
+            _log.LogWarning("Login failed for user: {Username}", loginRequestDto.Username);
             return Unauthorized("Username or password incorrect.");
         }
     }
