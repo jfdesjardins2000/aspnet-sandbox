@@ -83,5 +83,20 @@ namespace NewZealandWalks.API.Models.Mapping
         }
 
         #endregion
+
+
+        public static Image ToImage(this ImageUploadRequestDto request)
+        {
+            Image image = new NewZealandWalks.API.Models.Domain.Image
+            {
+                File = request.File,
+                FileExtension = Path.GetExtension(request.File.FileName),
+                FileSizeInBytes = request.File.Length,
+                FileName = request.FileName,
+                FileDescription = request.FileDescription,
+            };
+
+            return image;
+        }
     }
 }
