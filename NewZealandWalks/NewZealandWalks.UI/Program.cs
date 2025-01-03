@@ -7,6 +7,9 @@ internal class Program
         // Add services to the container.
         builder.Services.AddControllersWithViews();
 
+        // Ajout du client pour HTTP
+        builder.Services.AddHttpClient();
+
         var app = builder.Build();
 
         // Configure the HTTP request pipeline.
