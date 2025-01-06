@@ -2,7 +2,8 @@
 
 ---
 ## NewZealandWalks
-### Code pour le cours [Build ASPNET Core Web API- Scratch To Finish (.NET8 API)]
+### Cours UdeMy:[Build ASPNET Core Web API- Scratch To Finish (.NET8 API)]
+### Code original:[GitHub](https://github.com/sameer8saini/NZWalks-Solution) 
 Notions couvertes dans ce cours:
 - C#, 
 - [ASP.NET Core Web API],
@@ -15,7 +16,9 @@ Notions couvertes dans ce cours:
 
 ---
 ## asp-net-identity-v2
-### Code pour le cours [ASPNET Core Identity & Security] :
+### Cours UdeMy:[ASPNET Core Identity & Security]
+### Code original:[GitHub](https://github.com/aussiearef/asp-net-identity-v2?tab=readme-ov-file) 
+Notions couvertes dans ce cours
 - ASP.NET Core [Identity]
 - 2FA/MFA, 
 - [OAuth], 
@@ -24,16 +27,17 @@ Notions couvertes dans ce cours:
 
 ---
 ## CodePulse
-### Code pour le cours [ANGULAR and ASP.NET Core REST API - Real World Application]
+### Cours UdeMy:[ANGULAR and ASP.NET Core REST API - Real World Application]
+### Code original GitHub:[CodePulse.API](https://github.com/sameer8saini/CodePulse.API)
+### Code original GitHub:[CodePulse.UI](https://github.com/sameer8saini/CodePulse.UI)
 Notions couvertes dans ce cours:
 - [C#], 
-- [ASP.NET Core Web API], 
 - [Angular]
+- [ASP.NET Core Web API], 
 
 
 
 [//]: # (These are reference links used in the body of this note and get stripped out when the markdown processor does its job. There is no need to format nicely because it shouldn't be seen. Thanks SO - http://stackoverflow.com/questions/4823468/store-comments-in-markdown-syntax)
-
 
 [ASPNET Core Identity & Security]: <https://mern.udemy.com/course/aspnet-core-2-security-and-identity-management-with-c/learn/lecture/9908504#overview>
 [C#]: <https://dotnet.microsoft.com/en-us/languages/csharp>
