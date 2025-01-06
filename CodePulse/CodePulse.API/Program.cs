@@ -63,6 +63,7 @@ internal class Program
 
         Console.WriteLine($"builder.Environment: {builder.Environment.EnvironmentName}");
 
+        // Récupérer les configurations depuis appsettings.json selon l'environnement
         builder.Configuration
         .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
         .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true, reloadOnChange: true)
