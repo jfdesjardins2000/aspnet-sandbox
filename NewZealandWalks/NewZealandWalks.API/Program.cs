@@ -18,20 +18,20 @@ internal class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        //1. * *Première approche(Static) * * :
-        Log.Logger = new LoggerConfiguration()
-            .MinimumLevel.Information()
-            .Enrich.FromLogContext()
-            .WriteTo.Console()
-            .WriteTo.File(
-                path: "Logs/log-.log",
-                rollingInterval: RollingInterval.Day,
-                retainedFileCountLimit: 1,
-                outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}")
-            .CreateLogger();
+        ////1. * *Première approche(Static) * * :
+        //Log.Logger = new LoggerConfiguration()
+        //    .MinimumLevel.Information()
+        //    .Enrich.FromLogContext()
+        //    .WriteTo.Console()
+        //    .WriteTo.File(
+        //        path: "Logs/log-.log",
+        //        rollingInterval: RollingInterval.Day,
+        //        retainedFileCountLimit: 1,
+        //        outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}")
+        //    .CreateLogger();
 
-        // Intégration avec ASP.NET Core
-        builder.Host.UseSerilog();
+        //// Intégration avec ASP.NET Core
+        //builder.Host.UseSerilog();
 
 
         // 2. * *Deuxième approche(DI) * * :
@@ -71,20 +71,20 @@ internal class Program
 
             options.AddSecurityRequirement(new OpenApiSecurityRequirement
             {
-        {
-            new OpenApiSecurityScheme
-            {
-                 Reference = new OpenApiReference
-                 {
-                     Type = ReferenceType.SecurityScheme,
-                     Id = JwtBearerDefaults.AuthenticationScheme
-                 },
-                 Scheme = "Oauth2",
-                 Name = JwtBearerDefaults.AuthenticationScheme,
-                 In = ParameterLocation.Header
-            },
-            new List<string>()
-        }
+                {
+                    new OpenApiSecurityScheme
+                    {
+                         Reference = new OpenApiReference
+                         {
+                             Type = ReferenceType.SecurityScheme,
+                             Id = JwtBearerDefaults.AuthenticationScheme
+                         },
+                         Scheme = "Oauth2",
+                         Name = JwtBearerDefaults.AuthenticationScheme,
+                         In = ParameterLocation.Header
+                    },
+                    new List<string>()
+                }
             });
         });
 
