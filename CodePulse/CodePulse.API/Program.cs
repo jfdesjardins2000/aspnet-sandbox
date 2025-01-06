@@ -80,7 +80,7 @@ internal class Program
         });
 
         // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-        builder.Services.AddOpenApi();
+        //builder.Services.AddOpenApi();
 
         WebApplication app = builder.Build();
 
@@ -92,7 +92,13 @@ internal class Program
         Console.WriteLine($"ConnectionString {mySettings?.ConnectionString}");
 
 
-        // Configure the HTTP request pipeline.
+
+        //// Configure the HTTP request pipeline.
+        //if (app.Environment.IsDevelopment())
+        //{
+        //    app.MapOpenApi();
+        //}
+
         // Condiguration de base : https://localhost:7015/swagger/index.html
         //if (app.Environment.IsDevelopment()) // Swagger UI est uniquement activé en mode développement
         //{

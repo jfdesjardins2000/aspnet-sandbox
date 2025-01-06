@@ -5,7 +5,9 @@
 ### Code pour le cours [Build ASPNET Core Web API- Scratch To Finish (.NET8 API)]
 Notions couvertes dans ce cours:
 - C#, 
-- [ASP.NET Core Web API], 
+- [ASP.NET Core Web API],
+- [Configuration Swagger]
+- [Improve the developer experience of an API with Swagger documentation]
 - [Entity Framework Core], 
 - [Authentication] &  [Authorization]
 - [Identity] on ASP .NET Core
@@ -27,6 +29,8 @@ Notions couvertes dans ce cours:
 [ANGULAR and ASP.NET Core REST API - Real World Application]: <https://mern.udemy.com/course/real-world-app-angular-aspnet-core-web-api-and-sql/learn/lecture/38606284#overview>
 [Build ASPNET Core Web API- Scratch To Finish (.NET8 API)]: <https://mern.udemy.com/course/build-rest-apis-with-aspnet-core-web-api-entity-framework/learn/lecture/29704306#overview>    
 [ASP.NET Core Web API]: <https://learn.microsoft.com/en-us/aspnet/core/web-api/?view=aspnetcore-9.0>
+[Configuration Swagger]: <https://learn.microsoft.com/en-us/aspnet/core/tutorials/web-api-help-pages-using-swagger?view=aspnetcore-8.0&viewFallbackFrom=aspnetcore-9.0>
+[Improve the developer experience of an API with Swagger documentation]: <https://learn.microsoft.com/en-us/training/modules/improve-api-developer-experience-with-swagger/?source=recommendations>
 [Entity Framework Core]: <https://learn.microsoft.com/fr-fr/ef/core/>
 [SQLite]: <https://www.sqlite.org/index.html>
 [Authentication]: <https://learn.microsoft.com/en-us/aspnet/core/security/authentication/?view=aspnetcore-9.0>

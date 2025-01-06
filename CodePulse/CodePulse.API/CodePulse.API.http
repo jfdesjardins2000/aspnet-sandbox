@@ -1,6 +1,6 @@
-@CodePulse.API_HostAddress = http://localhost:5128
+@CodePulse.API_HostAddress = https://localhost:7015
 
-GET {{CodePulse.API_HostAddress}}/weatherforecast/
+GET {{CodePulse.API_HostAddress}}/api/weatherforecast/
 
 Accept: application/json
 
