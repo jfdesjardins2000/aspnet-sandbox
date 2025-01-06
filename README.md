@@ -1,7 +1,7 @@
 # aspnet-sandbox
 
 ---
-## NewZealandWalks : 
+## NewZealandWalks
 ### Code pour le cours [Build ASPNET Core Web API- Scratch To Finish (.NET8 API)]
 Notions couvertes dans ce cours:
 - C#, 
@@ -10,8 +10,17 @@ Notions couvertes dans ce cours:
 - [Improve the developer experience of an API with Swagger documentation]
 - [Entity Framework Core], 
 - [Authentication] &  [Authorization]
-- [Identity] on ASP .NET Core
+- ASP.NET Core [Identity]
 - ASP NET MVC
+
+---
+## asp-net-identity-v2
+### Code pour le cours [ASPNET Core Identity & Security] :
+- ASP.NET Core [Identity]
+- 2FA/MFA, 
+- [OAuth], 
+- Jason Web Token [JWT] , 
+- Microservices Security and [OWASP]
 
 ---
 ## CodePulse
@@ -24,6 +33,9 @@ Notions couvertes dans ce cours:
 
 
 [//]: # (These are reference links used in the body of this note and get stripped out when the markdown processor does its job. There is no need to format nicely because it shouldn't be seen. Thanks SO - http://stackoverflow.com/questions/4823468/store-comments-in-markdown-syntax)
+
+
+[ASPNET Core Identity & Security]: <https://mern.udemy.com/course/aspnet-core-2-security-and-identity-management-with-c/learn/lecture/9908504#overview>
 [C#]: <https://dotnet.microsoft.com/en-us/languages/csharp>
 [Angular]: <https://angular.dev/>
 [ANGULAR and ASP.NET Core REST API - Real World Application]: <https://mern.udemy.com/course/real-world-app-angular-aspnet-core-web-api-and-sql/learn/lecture/38606284#overview>
@@ -36,3 +48,6 @@ Notions couvertes dans ce cours:
 [Authentication]: <https://learn.microsoft.com/en-us/aspnet/core/security/authentication/?view=aspnetcore-9.0>
 [Authorization]: <https://learn.microsoft.com/en-us/aspnet/core/security/authorization/introduction?view=aspnetcore-9.0>
 [Identity]: <https://learn.microsoft.com/en-us/aspnet/core/security/authentication/identity?view=aspnetcore-9.0&tabs=visual-studio>
+[JWT]: <https://jwt.io/>
+[OAuth]: <https://auth0.com/fr>
+[OWASP]: <https://owasp.org/>
