@@ -2,40 +2,37 @@
 
 ## Install Packages using the CLI
 
-    * Install Entity Framework Core (EF Core) is a modern object-database mapper
-        * `dotnet add package Microsoft.EntityFrameworkCore --version 9.0.0`
-
-    * Install EF Db Provider 
-        * Sqlite
-            * `dotnet add package Microsoft.EntityFrameworkCore.Sqlite.Core --version 9.0.0`
-            * `dotnet add package SQLitePCLRaw.bundle_e_sqlite3 -v 2.1.10`			
-        * oracle
-            * `dotnet add package Oracle.ManagedDataAccess --version 19.25.0`
-        * PostgreSQL
-			* `dotnet add package Npgsql.EntityFrameworkCore.PostgreSQL`
-        * SqlServer
-            * `dotnet add package Microsoft.EntityFrameworkCore.SqlServer`            
-
-    * Install EF Tools & Design
-        * `dotnet add package Microsoft.EntityFrameworkCore.Design`
-	    * `dotnet add package Microsoft.EntityFrameworkCore.Tools`
-
-	* Install useful Packages
-        * ASP.NET Core Identity & Security provider
-            * `dotnet add package Microsoft.AspNetCore.Identity.EntityFrameworkCore -v 9.0.0`
-            * `dotnet add package Microsoft.AspNetCore.Authentication.JwtBearer -v 9.0.0`            
-            * `dotnet add package Microsoft.IdentityModel.Tokens -v 8.3.0`
-            * `dotnet add package System.IdentityModel.Tokens.Jwt -v 8.3.0`
-        * Serilog
-            * `dotnet add package Serilog -v 4.2.0`
-            * `dotnet add package Serilog.AspNetCore -v 9.0.0`
-            * `dotnet add package Serilog.Sinks.Console -v 6.0.0`
-            * `dotnet add package Serilog.Sinks.Debug -v 3.0.0`
-            * `dotnet add package Serilog.Sinks.File -v 6.0.0`
-       * Swagger
-            * `dotnet add package Swashbuckle.AspNetCore -v 7.2.0`
-            * `dotnet add package Swashbuckle.AspNetCore.Swagger --version 7.2.0`
-            * `dotnet add package Swashbuckle.AspNetCore.SwaggerGen --version 7.2.0`
+* Install Entity Framework Core (EF Core) is a modern object-database mapper
+    * `dotnet add package Microsoft.EntityFrameworkCore --version 9.0.0`
+* Install EF Db Provider 
+    * Sqlite
+        * `dotnet add package Microsoft.EntityFrameworkCore.Sqlite.Core --version 9.0.0`
+        * `dotnet add package SQLitePCLRaw.bundle_e_sqlite3 -v 2.1.10`			
+    * oracle
+        * `dotnet add package Oracle.ManagedDataAccess --version 19.25.0`
+    * PostgreSQL
+		* `dotnet add package Npgsql.EntityFrameworkCore.PostgreSQL`
+    * SqlServer
+        * `dotnet add package Microsoft.EntityFrameworkCore.SqlServer`            
+* Install EF Tools & Design
+    * `dotnet add package Microsoft.EntityFrameworkCore.Design`
+    * `dotnet add package Microsoft.EntityFrameworkCore.Tools`
+* Install useful Packages
+    * ASP.NET Core Identity & Security provider
+        * `dotnet add package Microsoft.AspNetCore.Identity.EntityFrameworkCore -v 9.0.0`
+        * `dotnet add package Microsoft.AspNetCore.Authentication.JwtBearer -v 9.0.0`            
+        * `dotnet add package Microsoft.IdentityModel.Tokens -v 8.3.0`
+        * `dotnet add package System.IdentityModel.Tokens.Jwt -v 8.3.0`
+    * Serilog
+        * `dotnet add package Serilog -v 4.2.0`
+        * `dotnet add package Serilog.AspNetCore -v 9.0.0`
+        * `dotnet add package Serilog.Sinks.Console -v 6.0.0`
+        * `dotnet add package Serilog.Sinks.Debug -v 3.0.0`
+        * `dotnet add package Serilog.Sinks.File -v 6.0.0`
+   * Swagger
+        * `dotnet add package Swashbuckle.AspNetCore -v 7.2.0`
+        * `dotnet add package Swashbuckle.AspNetCore.Swagger --version 7.2.0`
+        * `dotnet add package Swashbuckle.AspNetCore.SwaggerGen --version 7.2.0`
 
 
 ## Conventions 
