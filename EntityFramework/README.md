@@ -8,6 +8,13 @@ Dans vscode:
 
     * Install Entity Framework Core (EF Core) is a modern object-database mapper
         * `dotnet add package Microsoft.EntityFrameworkCore --version 9.0.0`
+		
+    * Install EF Desing
+        * `dotnet add package Microsoft.EntityFrameworkCore.Design`
+		
+    * Install EF Tools
+        * `dotnet add package Microsoft.EntityFrameworkCore.Tools`
+
 
     * Install EF Db Provider 
         * Sqlite
@@ -305,86 +312,7 @@ using (var transaction = context.Database.BeginTransaction())
 
 * [MS-Docs: Managing Database Schemas](https://docs.microsoft.com/en-us/ef/core/managing-schemas/)
 
-
-Installing the tools
-dotnet ef can be installed as either a global or local tool. Most developers prefer installing dotnet ef as a global tool using the following command:
-
-    
-1. Installer les packages nécessaires
-
-2. Configurer votre contexte de base de données
-
-3. Assurez-vous d'avoir les outils bien intallés ou les mettre à jour
-    ```powershell
-    #installation
-    dotnet tool install --global dotnet-ef
-    
-    #mise à jour
-    dotnet tool update --global dotnet-ef
-
-    #vérifier l'installation
-    dotnet ef
-
-                     _/\__
-               ---==/    \\
-         ___  ___   |.    \|\
-        | __|| __|  |  )   \\\
-        | _| | _|   \_/ |  //|\\
-        |___||_|       /   \\\/\\
-
-    Entity Framework Core .NET Command-line Tools 9.0.0
-
-    Usage: dotnet ef [options] [command]
-    Options:
-    --version        Show version information
-    -h|--help        Show help information
-    -v|--verbose     Show verbose output.
-    --no-color       Dont colorize output.
-    --prefix-output  Prefix output with level.
-
-    Commands:
-    database    Commands to manage the database.
-    dbcontext   Commands to manage DbContext types.
-    migrations  Commands to manage migrations.
-
-    Use "dotnet ef [command] --help" for more information about a command.
-
-
-    ```
-
-3. Ajouter une migration
-    ```powershell
-    dotnet ef migrations add InitialCreate
-    ```
-4. Appliquer la migration à la base de données
-    ```powershell
-    dotnet ef database update
-    ```
-5. Ajouter une migration :
-    ```powershell
-    dotnet ef migrations add <MigrationName>
-    ```
-6. Appliquer la migration :
-    ```powershell
-    dotnet ef database update
-    ```
-7. Retirer la dernière migration:
-    ```powershell
-    dotnet ef migrations remove
-    ```
-8. Lister toutes les migrations
-    ```powershell
-    dotnet ef migrations list
-    ```
-9. Lister toutes les migrations
-    ```powershell
-    dotnet ef dbcontext list
-    ```    
-10. Générer un script SQL basé à partir des migrations
-    ```powershell
-    #pour rédiger le script dans le terminal
-    dotnet ef migrations script
-    
-    #Générer un script SQL basé sur les migrations et enregistrer la sortie dans un fichier
-    dotnet ef migrations script > EF_Migrations_Script.sql
-    ```
+* Add Migration: `dotnet ef migrations add <MigrationName>`
+* Update target database: `dotnet ef database update`
+* Remove last Migration: `dotnet ef migrations remove`
+* Generate SQL script from Migrations: `dotnet ef migrations script`
