@@ -11,7 +11,7 @@
     * Install Entity Framework Core (EF Core) is a modern object-database mapper
         * `dotnet add package Microsoft.EntityFrameworkCore --version 9.0.0`
 		
-    * Install EF Desing
+    * Install EF Design
         * `dotnet add package Microsoft.EntityFrameworkCore.Design`
 		
     * Install EF Tools
