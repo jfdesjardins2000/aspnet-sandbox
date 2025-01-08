@@ -1,3 +1,7 @@
+using IdentityNetCore.Data;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+
 namespace IdentityNetCore
 {
     public class Program
@@ -5,6 +9,11 @@ namespace IdentityNetCore
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+            var connString = builder.Configuration["ConnectionStrings:Default"];
+
+            builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlite(connString));
+            builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();

@@ -55,3 +55,4 @@ Notions couvertes dans ce cours:
 [JWT]: <https://jwt.io/>
 [OAuth]: <https://auth0.com/fr>
 [OWASP]: <https://owasp.org/>
+
