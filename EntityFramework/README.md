@@ -1,10 +1,6 @@
 # Entity Framework Core Cheat Sheet
 
-Dans vscode: 
-
-## Install Entity Framework
-
-* Install Packages using the CLI
+## Install Packages using the CLI
 
     * Install Entity Framework Core (EF Core) is a modern object-database mapper
         * `dotnet add package Microsoft.EntityFrameworkCore --version 9.0.0`
@@ -122,33 +118,6 @@ Dans vscode:
 
 * (codefirst) database Tables <strong>NAMES</strong>
     * The Name of the `DbSet<Entity>` property, will be name of the table <br/>
-
-## Create a *DbContext*
-
-* `DbContextOptionsBuilder` in Constructor:
-
-```csharp
-//EF
-using Microsoft.EntityFrameworkCore;
-namespace ContosoPizza.Data; //Create this Dbcontext class on Data folder
-//DbContext is like a representation of a session within the database
-public class ContosoPizzaContext : DbContext 
-{
-    //Dbset maps to table that will be created in the datebase
-    public DbSet<Customer> Customers { get; set; } = null!;
-    public DbSet<Order> Orders { get; set; } = null!;
-    //Override DbContext.OnConfiguring(DbContextOptionsBuilder options) and set string connection
-    protected override void OnConfiguring(DbContextOptionsBuilder options)
-    {
-        //its a bad practice use the string connection like this...
-        options.UseSqlServer(@"Data Source=localhost; Initial Catalog=ContosoPizza; Integrated Security=true;"); 
-    }
-
-    //Run in CLI
-    //1) `dotnet ef migrations add NameOfMigration`
-    //2) `dotnet ef database update`
-}
-```
 
 
 ## Connection String in `appsettings.json`
