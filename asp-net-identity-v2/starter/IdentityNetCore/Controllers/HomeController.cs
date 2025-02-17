@@ -1,6 +1,7 @@
-using System.Diagnostics;
 using IdentityNetCore.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
 
 namespace IdentityNetCore.Controllers
 {
@@ -14,6 +15,18 @@ namespace IdentityNetCore.Controllers
         }
 
         public IActionResult Index()
+        {
+            return View();
+        }
+
+        [Authorize]
+        public IActionResult Member()
+        {
+            return View();
+        }
+
+        [Authorize]
+        public IActionResult Admin()
         {
             return View();
         }

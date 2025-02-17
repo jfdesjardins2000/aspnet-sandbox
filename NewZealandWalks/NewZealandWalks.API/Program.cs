@@ -35,7 +35,7 @@ internal class Program
 
 
         // 2. * *Deuxième approche(DI) * * :
-        var logger = new LoggerConfiguration()
+        Serilog.Core.Logger logger = new LoggerConfiguration()
             .MinimumLevel.Information()
             .Enrich.FromLogContext()
             .WriteTo.Console()
@@ -111,14 +111,20 @@ internal class Program
             .AddEntityFrameworkStores<NZWalksAuthDbContext>()
             .AddDefaultTokenProviders();
 
-        // Configuration du password possible
+        // Configuration de l'Identite (password)
         builder.Services.Configure<IdentityOptions>(options =>
         {
+            options.Password.RequiredLength = 6;
             options.Password.RequireDigit = false;
+            options.Password.RequireNonAlphanumeric = false;
+
+            options.Lockout.MaxFailedAccessAttempts = 3;
+            options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(10);
+
             options.Password.RequireLowercase = false;
             options.Password.RequireUppercase = false;
-            options.Password.RequireNonAlphanumeric = false;
-            options.Password.RequiredLength = 6;
+
+            options.SignIn.RequireConfirmedEmail = true;
             options.Password.RequiredUniqueChars = 1;
         });
 
