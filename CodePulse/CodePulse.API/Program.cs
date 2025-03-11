@@ -1,4 +1,6 @@
 ﻿using CodePulse.API.Data;
+using CodePulse.API.Repositories.Implementation;
+using CodePulse.API.Repositories.Interface;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Serilog;
@@ -34,6 +36,9 @@ internal class Program
         // Configurer la chaîne de connexion pour la BD SQLite Business
         builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlite(connectionString));
 
+
+        builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+
         WebApplication app = builder.Build();
 
         // On active Swagger UI peu importe l'environnement
@@ -45,6 +50,7 @@ internal class Program
 
         app.UseHttpsRedirection();
 
+        //app.UseAuthentication();
         app.UseAuthorization();
 
         app.MapControllers();
