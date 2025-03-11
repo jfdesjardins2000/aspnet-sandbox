@@ -61,7 +61,9 @@ internal class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        Console.WriteLine($"builder.Environment: {builder.Environment.EnvironmentName}");
+        // Provient de ASPNETCORE_ENVIRONMENT dans launchSettings.json selon le profil d'execution qu'on choisi.
+        string env = builder.Environment.EnvironmentName;
+        Console.WriteLine($"builder.Environment: {env}");
 
         // Récupérer les configurations depuis appsettings.json selon l'environnement
         builder.Configuration
