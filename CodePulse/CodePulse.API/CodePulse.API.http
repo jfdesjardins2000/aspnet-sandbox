@@ -4,4 +4,11 @@ GET {{CodePulse.API_HostAddress}}/api/weatherforecast/
 
 Accept: application/json
 
-###
+### Tester le Post du CreateCategory dans CategoriesController
+POST {{CodePulse.API_HostAddress}}/api/categories/
+Content-Type: application/json
+
+{
+  "name": "ASP.NET Core",
+  "urlHandle": "aspnet-blogs"
+}
