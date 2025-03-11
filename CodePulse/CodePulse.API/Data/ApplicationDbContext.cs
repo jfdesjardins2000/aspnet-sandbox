@@ -1,5 +1,6 @@
 ﻿using CodePulse.API.Models.Domain;
 using Microsoft.EntityFrameworkCore;
+using SQLitePCL;
 
 namespace CodePulse.API.Data
 {
@@ -11,6 +12,7 @@ namespace CodePulse.API.Data
         /// <param name="options"></param>
         public ApplicationDbContext(DbContextOptions options) : base(options)
         {
+            Batteries.Init();
         }
 
         public DbSet<BlogPost> BlogPosts { get; set; }
