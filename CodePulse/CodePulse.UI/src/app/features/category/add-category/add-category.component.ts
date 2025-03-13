@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 //import { RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { AddCategoryRequestModel } from '../models/add-category-request.model';
 import { CategoryService } from '../services/category.service';
 import { error } from 'console';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-add-category',
@@ -12,7 +13,10 @@ import { error } from 'console';
   templateUrl: './add-category.component.html',
   styleUrl: './add-category.component.css'
 })
-export class AddCategoryComponent {
+export class AddCategoryComponent implements OnDestroy {
+  
+  private addCategorySubscription?: Subscription
+  
   // model: {
   //   name: string;
   //   urlHandle: string;
@@ -30,12 +34,14 @@ export class AddCategoryComponent {
       };   
   }
 
+
   onFormSubmit() {
     // Votre logique de soumission ici
-    console.log(`model.name: ${this.model.name}`);
-    console.log(this.model);
 
-    this.categoryService.addCategory(this.model)
+
+    console.log(`name: ${this.model.name} urlHandle:${this.model.urlHandle}`);
+    
+    this.addCategorySubscription = this.categoryService.addCategory(this.model)
     .subscribe({
       next: (response) => {
           console.log("Add Category Successfull!");
@@ -44,5 +50,11 @@ export class AddCategoryComponent {
         console.error(err);
       }
     });
+
+  }
+  
+  ngOnDestroy(): void {
+    console.log('addCategorySubscription.unsubscribe');
+    this.addCategorySubscription?.unsubscribe();
   }
 }
