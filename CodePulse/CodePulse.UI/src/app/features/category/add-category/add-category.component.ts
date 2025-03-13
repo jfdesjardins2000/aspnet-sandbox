@@ -1,9 +1,7 @@
 import { Component, OnDestroy } from '@angular/core';
-//import { RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { AddCategoryRequestModel } from '../models/add-category-request.model';
 import { CategoryService } from '../services/category.service';
-import { error } from 'console';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -34,11 +32,8 @@ export class AddCategoryComponent implements OnDestroy {
       };   
   }
 
-
   onFormSubmit() {
     // Votre logique de soumission ici
-
-
     console.log(`name: ${this.model.name} urlHandle:${this.model.urlHandle}`);
     
     this.addCategorySubscription = this.categoryService.addCategory(this.model)
@@ -50,7 +45,6 @@ export class AddCategoryComponent implements OnDestroy {
         console.error(err);
       }
     });
-
   }
   
   ngOnDestroy(): void {
