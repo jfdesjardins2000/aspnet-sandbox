@@ -94,7 +94,8 @@ public class CategoryRepository : ICategoryRepository
 
     public async Task<int> GetCount()
     {
-        return await dbContext.Categories.CountAsync();
+        int count = await dbContext.Categories.CountAsync();
+        return count;
     }
 
     public async Task<Category?> UpdateAsync(Category category)
