@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CodePulse.API.Controllers
 {
+    // https://localhost:7015/api/blogposts
     [Route("api/[controller]")]
     [ApiController]
     public class BlogPostsController : ControllerBase
@@ -14,7 +15,8 @@ namespace CodePulse.API.Controllers
         private readonly IBlogPostRepository blogPostRepository;
         private readonly ICategoryRepository categoryRepository;
 
-        public BlogPostsController(IBlogPostRepository blogPostRepository,
+        public BlogPostsController(
+            IBlogPostRepository blogPostRepository,
             ICategoryRepository categoryRepository)
         {
             this.blogPostRepository = blogPostRepository;
