@@ -3,27 +3,33 @@ import { CategoryListComponent } from './features/category/category-list/categor
 import { AddCategoryComponent } from './features/category/add-category/add-category.component';
 import { EditCategoryComponent } from './features/category/edit-category/edit-category.component';
 import { BlogpostListComponent } from './features/blog-post/blogpost-list/blogpost-list.component';
+import { AddBlogpostComponent } from './features/blog-post/add-blogpost/add-blogpost.component';
 
 export const routes: Routes = [
   {
     path: 'admin/categories',
-    component: CategoryListComponent,
+    component: CategoryListComponent
   },
   {
     path: 'admin/categories/add',
-    component: AddCategoryComponent,
+    component: AddCategoryComponent
   },
   {
     path: 'admin/categories/:id',
-    component: EditCategoryComponent,
+    component: EditCategoryComponent
   },
   {
     path: 'admin/blogposts',
-    component: BlogpostListComponent,
+    component: BlogpostListComponent
   },
+  {
+    path: 'admin/blogposts/add',
+    component: AddBlogpostComponent
+  },  
+
 ];
 
-// import { AddBlogpostComponent } from './features/blog-post/add-blogpost/add-blogpost.component';
+
 // import { EditBlogpostComponent } from './features/blog-post/edit-blogpost/edit-blogpost.component';
 // import { HomeComponent } from './features/public/home/home.component';
 // import { BlogDetailsComponent } from './features/public/blog-details/blog-details.component';
@@ -42,11 +48,6 @@ export const routes: Routes = [
 //     {
 //       path: 'blog/:url',
 //       component: BlogDetailsComponent
-//     },
-//     {
-//       path: 'admin/blogposts/add',
-//       component: AddBlogpostComponent,
-//       canActivate: [authGuard]
 //     },
 //     {
 //       path: 'admin/blogposts/:id',
