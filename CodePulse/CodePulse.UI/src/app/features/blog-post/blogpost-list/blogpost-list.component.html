@@ -6,6 +6,35 @@
       <a [routerLink]="['/admin/blogposts/add']" class="btn btn-primary">Add BlogPost</a>
     </div>
 
-
+    @if (blogPosts$ | async; as blogPosts) {
+      <table class="table table-bordered mt-3">
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Short Description</th>
+            <th>Is Visible?</th>
+            <th>Categories</th>
+            <th> </th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (blogPost of blogPosts; track blogPost.id) {
+            <tr>
+              <td>{{blogPost.title}}</td>
+              <td>{{blogPost.shortDescription}}</td>
+              <td>{{blogPost.isVisible}}</td>
+              <td>
+                @for (category of blogPost.categories; track category.id) {
+                  <span class="badge bg-secondary me-2">{{category.name}}</span>
+                }
+              </td>
+              <td>
+                <a class="btn btn-light" [routerLink]="['/admin/blogposts', blogPost.id]">Edit</a>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    }
 
 </div>
