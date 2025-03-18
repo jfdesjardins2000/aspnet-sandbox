@@ -8,12 +8,12 @@ import { MarkdownComponent } from 'ngx-markdown'; // Importez MarkdownComponent
 import { CategoryModel } from '../../category/models/category.model';
 import { Observable, Subscription } from 'rxjs';
 import { CategoryService } from '../../category/services/category.service';
-
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-add-blogpost',
   standalone: true,
-  imports: [FormsModule, DatePipe, MarkdownComponent],
+  imports: [FormsModule, DatePipe, MarkdownComponent, AsyncPipe],
   templateUrl: './add-blogpost.component.html',
   styleUrl: './add-blogpost.component.css'
 })
@@ -27,16 +27,17 @@ export class AddBlogpostComponent implements OnInit, OnDestroy {
   constructor(private blogPostService: BlogPostService, 
     private router: Router,
     private categoryService: CategoryService) {
-    this.model = {
-      title: '',
-      shortDescription: '',
-      urlHandle: '',
-      content: '',
-      featuredImageUrl: '',
-      author: '',
-      isVisible: true,
-      publishedDate: new Date(),
-      categories: []
+      //Initialiser le model
+      this.model = {
+        title: '',
+        shortDescription: '',
+        urlHandle: '',
+        content: '',
+        featuredImageUrl: '',
+        author: '',
+        isVisible: true,
+        publishedDate: new Date(),
+        categories: []
     }
     
   }
