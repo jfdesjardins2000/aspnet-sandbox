@@ -8,6 +8,7 @@ import { AsyncPipe, DatePipe } from '@angular/common';
 import { MarkdownComponent } from 'ngx-markdown';
 import { CategoryService } from '../../category/services/category.service';
 import { CategoryModel } from '../../category/models/category.model';
+import { UpdateBlogPostModel } from '../models/update-blog-post.model';
 
 @Component({
   selector: 'app-edit-blogpost',
@@ -66,9 +67,27 @@ export class EditBlogpostComponent implements OnInit, OnDestroy {
   }
 
   onFormSubmit(): void {
+    // Convert this model to Request Object
+    if (this.model && this.id) {
+      var updateBlogPost: UpdateBlogPostModel = {
+        author: this.model.author,
+        content: this.model.content,
+        shortDescription: this.model.shortDescription,
+        featuredImageUrl: this.model.featuredImageUrl,
+        isVisible: this.model.isVisible,
+        publishedDate: this.model.publishedDate,
+        title: this.model.title,
+        urlHandle: this.model.urlHandle,
+        categories: this.selectedCategories ?? []
+      };
 
-    console.log("onFormSubmit");
-    console.log(this.model);
+      this.updateBlogPostSubscription = this.blogPostService.updateBlogPost(this.id, updateBlogPost)
+      .subscribe({
+        next: (response) => {
+          this.router.navigateByUrl('/admin/blogposts');
+        }
+      });
+    }
   }
 
 
@@ -83,5 +102,9 @@ export class EditBlogpostComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.routeSubscription?.unsubscribe();
+    this.updateBlogPostSubscription?.unsubscribe();
+    this.getBlogPostSubscription?.unsubscribe();
+    this.deleteBlogPostSubscription?.unsubscribe();
+    this.imageSelectSubscricption?.unsubscribe();
   }
 }

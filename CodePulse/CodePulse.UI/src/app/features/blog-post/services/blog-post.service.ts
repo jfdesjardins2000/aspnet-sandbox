@@ -4,12 +4,13 @@ import { HttpClient } from '@angular/common/http';
 import { AddBlogPostModel } from '../models/add-blog-post.model';
 import { BlogPostModel } from '../models/blog-post-model';
 import { environment } from '../../../../environments/environment';
+import { UpdateBlogPostModel } from '../models/update-blog-post.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BlogPostService {
-
+  
   constructor(private http: HttpClient) { }
 
   createBlogPost(data: AddBlogPostModel) : Observable<BlogPostModel> {
@@ -23,5 +24,10 @@ export class BlogPostService {
   getBlogPostById(id: string): Observable<BlogPostModel> {
     return this.http.get<BlogPostModel>(`${environment.apiBaseUrl}/api/blogposts/${id}`);
   }
+
+  updateBlogPost(id: string, updateBlogPost: UpdateBlogPostModel) {
+    return this.http.put<BlogPostModel>(`${environment.apiBaseUrl}/api/blogposts/${id}`, updateBlogPost);
+  }
+
 
 }
