@@ -1,5 +1,8 @@
 # CodePulseUI
 
+Ce code est pour suivre le cours Udemy de Sameer Saini"
+`https://mern.udemy.com/course/real-world-app-angular-aspnet-core-web-api-and-sql/`
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.10.
 
 ## Development server
