@@ -10,11 +10,12 @@ import { CategoryService } from '../../category/services/category.service';
 import { CategoryModel } from '../../category/models/category.model';
 import { UpdateBlogPostModel } from '../models/update-blog-post.model';
 import { response } from 'express';
+import { ImageSelectorComponent } from "../../../shared/components/image-selector/image-selector.component";
 
 @Component({
   selector: 'app-edit-blogpost',
   standalone: true,
-  imports: [FormsModule, MarkdownComponent, AsyncPipe, DatePipe],
+  imports: [FormsModule, MarkdownComponent, AsyncPipe, DatePipe, ImageSelectorComponent],
   templateUrl: './edit-blogpost.component.html',
   styleUrl: './edit-blogpost.component.css',
 })
