@@ -2,6 +2,7 @@
 using CodePulse.API.Repositories.Implementation;
 using CodePulse.API.Repositories.Interface;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.OpenApi.Models;
 using Serilog;
 using System.Reflection;
@@ -24,6 +25,8 @@ internal class Program
 
         // Add services to the container.
         builder.Services.AddControllers();
+        builder.Services.AddHttpContextAccessor();
+        builder.Services.AddEndpointsApiExplorer();
 
         builder.Services.AddSwaggerGen(options =>
         {
@@ -39,7 +42,7 @@ internal class Program
 
         builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
         builder.Services.AddScoped<IBlogPostRepository, BlogPostRepository>();
-        //builder.Services.AddScoped<IImageRepository, ImageRepository>();
+        builder.Services.AddScoped<IImageRepository, ImageRepository>();
         //builder.Services.AddScoped<ITokenRepository, TokenRepository>();
 
         WebApplication app = builder.Build();
@@ -61,7 +64,13 @@ internal class Program
         });
 
         //app.UseAuthentication();
-        app.UseAuthorization();
+        //app.UseAuthorization();
+
+        app.UseStaticFiles(new StaticFileOptions
+        {
+            FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "Images")),
+            RequestPath = "/Images"
+        });
 
         app.MapControllers();
 

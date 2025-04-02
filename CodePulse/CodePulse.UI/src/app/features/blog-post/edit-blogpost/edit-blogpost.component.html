@@ -102,6 +102,7 @@
     }
 </div>
 
-<div class="images-container-model">
+<div class="images-container-model" [class.d-block]="isImageSelectorVisible" [class.d-none]="!isImageSelectorVisible">
+    <button type="button" class="btn btn-light" style="position: fixed; top: 10px;right: 10px" (click)="closeImageSelector()">X</button>
     <app-image-selector></app-image-selector>
 </div>
