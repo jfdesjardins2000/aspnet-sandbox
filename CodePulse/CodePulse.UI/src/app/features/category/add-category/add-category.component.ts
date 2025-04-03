@@ -14,7 +14,7 @@ import { Router } from '@angular/router';
 })
 export class AddCategoryComponent implements OnDestroy {
   
-  private addCategorySubscription?: Subscription
+  private addCategorySubscription?: Subscription;
   
   // model: {
   //   name: string;
