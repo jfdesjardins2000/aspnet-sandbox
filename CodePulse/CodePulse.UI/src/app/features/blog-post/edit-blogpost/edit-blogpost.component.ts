@@ -9,8 +9,9 @@ import { MarkdownComponent } from 'ngx-markdown';
 import { CategoryService } from '../../category/services/category.service';
 import { CategoryModel } from '../../category/models/category.model';
 import { UpdateBlogPostModel } from '../models/update-blog-post.model';
-import { response } from 'express';
 import { ImageSelectorComponent } from "../../../shared/components/image-selector/image-selector.component";
+import { ImageService } from '../../../shared/services/image.service';
+import { BlogImageModel } from '../../../shared/models/blog-image.model';
 
 @Component({
   selector: 'app-edit-blogpost',
@@ -36,7 +37,8 @@ export class EditBlogpostComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private blogPostService: BlogPostService,
     private categoryService: CategoryService,
-    private router: Router
+    private router: Router,
+    private imageService: ImageService
   ) {}
 
   ngOnInit(): void {
@@ -52,14 +54,22 @@ export class EditBlogpostComponent implements OnInit, OnDestroy {
           this.getBlogPostSubscription = this.blogPostService
             .getBlogPostById(this.id)
             .subscribe({
-              next: (response) => {
+              next: (response: BlogPostModel) => {
                 this.model = response;
                 this.selectedCategories = response.categories.map((x) => x.id);
               },
             });
         }
 
-        //this.imageSelectSubscricption = this.ima
+        this.imageSelectSubscricption = this.imageService.onSelectImage()
+        .subscribe( {
+          next: (response: BlogImageModel) => {
+              if (this.model) {
+                this.model.featuredImageUrl = response.url;
+                this.isImageSelectorVisible = false;
+              }
+          },
+        })
       },
       error: (err) => {
         console.error(err);

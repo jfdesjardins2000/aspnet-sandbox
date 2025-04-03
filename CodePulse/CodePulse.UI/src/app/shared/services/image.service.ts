@@ -37,7 +37,7 @@ export class ImageService {
   }
 
   onSelectImage(): Observable<BlogImageModel> {
-    return this.selectedImage.asObservable()
+    return this.selectedImage.asObservable();
   }
 
 }
