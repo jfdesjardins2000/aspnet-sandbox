@@ -100,14 +100,6 @@
                     }
                   </select>
                 }
-                <!-- @if (categories$ | async; as categories) {
-                    <select class="form-control" name="categories" id="categories">
-                      @for (category of categories; track category.id) {
-                        <option [value]="category.id">{{category.name}}</option>
-                      }
-                    </select>
-                  } -->
-
               </div>
 
             <div class="mt-3">
@@ -115,4 +107,9 @@
             </div>
         </div>
     </form>
+</div>
+
+<div class="images-container-model" [class.d-block]="isImageSelectorVisible" [class.d-none]="!isImageSelectorVisible">
+    <button type="button" class="btn btn-light" style="position: fixed; top: 10px;right: 10px" (click)="closeImageSelector()">X</button>
+    <app-image-selector></app-image-selector>
 </div>
