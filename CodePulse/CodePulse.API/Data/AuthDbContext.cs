@@ -42,39 +42,35 @@ namespace CodePulse.API.Data
             // Seed the roles
             builder.Entity<IdentityRole>().HasData(roles);
 
-            //// Create an Admin User
-            //var adminUserId = "edc267ec-d43c-4e3b-8108-a1a1f819906d";
-            //var admin = new IdentityUser()
-            //{
-            //    Id = adminUserId,
-            //    UserName = "admin@codepulse.com",
-            //    Email = "admin@codepulse.com",
-            //    NormalizedEmail = "ADMIN@CODEPULSE.COM",
-            //    NormalizedUserName = "ADMIN@CODEPULSE.COM"
-            //};
+            // Identifiants fixes
+            var adminUserId = "edc267ec-d43c-4e3b-8108-a1a1f819906d";
 
-            ////admin.PasswordHash = new PasswordHasher<IdentityUser>().HashPassword(admin, "Admin@123");
-            //admin.PasswordHash = "AQAAAAIAAYagAAAAEKG1GahV09HZ9Tk/MKKWng+/Q1fP1X0p8VW3rtrNYn/whyDjLSUBnJXbBBsLj63bZQ=="; // Hachage pré-généré pour "Admin@123"
+            // Crée l'utilisateur admin
+            var admin = new IdentityUser
+            {
+                Id = adminUserId,
+                UserName = "admin@codepulse.com",
+                Email = "admin@codepulse.com",
+                NormalizedEmail = "ADMIN@CODEPULSE.COM",
+                NormalizedUserName = "ADMIN@CODEPULSE.COM",
+                EmailConfirmed = true,
+                SecurityStamp = "e5b6dc2f-2949-4f33-8a89-140d01b53df1", // Valeur fixe
+                ConcurrencyStamp = "fc3e0935-ef8f-42b6-b6ff-1880e3d4a121", // Valeur fixe
+                PasswordHash = "AQAAAAIAAYagAAAAEKG1GahV09HZ9Tk/MKKWng+/Q1fP1X0p8VW3rtrNYn/whyDjLSUBnJXbBBsLj63bZQ=="
+            };
 
-            //builder.Entity<IdentityUser>().HasData(admin);
 
-            //// Give Roles To Admin
-            //var adminRoles = new List<IdentityUserRole<string>>()
-            //{
-            //    new()
-            //    {
-            //        UserId = adminUserId,
-            //        RoleId = readerRoleId
-            //    },
-            //    new()
-            //    {
-            //        UserId = adminUserId,
-            //        RoleId = writerRoleId
-            //    }
-            //};
+            // Ajoute l’utilisateur
+            builder.Entity<IdentityUser>().HasData(admin);
 
-            //builder.Entity<IdentityUserRole<string>>().HasData(adminRoles);
+            // Affecte les rôles admin
+            var adminRoles = new List<IdentityUserRole<string>>
+            {
+                new() { UserId = adminUserId, RoleId = readerRoleId },
+                new() { UserId = adminUserId, RoleId = writerRoleId }
+            };
 
+            builder.Entity<IdentityUserRole<string>>().HasData(adminRoles);
         }
     }
 }
