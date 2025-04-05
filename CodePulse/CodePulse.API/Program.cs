@@ -1,11 +1,15 @@
 ﻿using CodePulse.API.Data;
 using CodePulse.API.Repositories.Implementation;
 using CodePulse.API.Repositories.Interface;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Serilog;
 using System.Reflection;
+using System.Text;
 
 internal class Program
 {
@@ -38,12 +42,46 @@ internal class Program
 
         // Configurer la chaîne de connexion pour la BD SQLite Business
         builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlite(connectionString));
-
+        builder.Services.AddDbContext<AuthDbContext>(options => options.UseSqlite(connectionString));
 
         builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
         builder.Services.AddScoped<IBlogPostRepository, BlogPostRepository>();
         builder.Services.AddScoped<IImageRepository, ImageRepository>();
         //builder.Services.AddScoped<ITokenRepository, TokenRepository>();
+
+        builder.Services.AddIdentityCore<IdentityUser>()
+            .AddRoles<IdentityRole>()
+            .AddTokenProvider<DataProtectorTokenProvider<IdentityUser>>("CodePulse")
+            .AddEntityFrameworkStores<AuthDbContext>()
+            .AddDefaultTokenProviders();
+
+        builder.Services.Configure<IdentityOptions>(options =>
+        {
+            options.User.RequireUniqueEmail = true;
+            options.SignIn.RequireConfirmedAccount = false;
+            options.Password.RequireDigit = false;
+            options.Password.RequiredLength = 6;
+            options.Password.RequireNonAlphanumeric = false;
+            options.Password.RequireUppercase = false;
+            options.Password.RequireLowercase = false;
+        });
+        builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(OptionsBuilderConfigurationExtensions =>
+            {
+                //OptionsBuilderConfigurationExtensions.RequireHttpsMetadata = false;
+                //OptionsBuilderConfigurationExtensions.SaveToken = true;
+                OptionsBuilderConfigurationExtensions.TokenValidationParameters = new TokenValidationParameters
+                {
+                    AuthenticationType = "Jwt",
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = builder.Configuration["Jwt:Issuer"],
+                    ValidAudience = builder.Configuration["Jwt:Audience"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+                };
+            });
 
         WebApplication app = builder.Build();
 
@@ -63,8 +101,8 @@ internal class Program
             options.AllowAnyMethod();
         });
 
-        //app.UseAuthentication();
-        //app.UseAuthorization();
+        app.UseAuthentication();
+        app.UseAuthorization();
 
         app.UseStaticFiles(new StaticFileOptions
         {
