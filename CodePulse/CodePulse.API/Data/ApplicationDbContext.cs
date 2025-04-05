@@ -10,7 +10,7 @@ namespace CodePulse.API.Data
         /// Constructeur
         /// </summary>
         /// <param name="options"></param>
-        public ApplicationDbContext(DbContextOptions options) : base(options)
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
             Batteries.Init();
         }
