@@ -45,6 +45,7 @@ namespace CodePulse.API.Controllers
 
         // GET: https://localhost:7015/api/Categories?query=html&sortBy=name&sortDirection=desc
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> GetAllCategories(
             [FromQuery] string? query,
             [FromQuery] string? sortBy,
