@@ -48,16 +48,16 @@ public class CategoryRepository : ICategoryRepository
         int? pageSize = 100)
     {
         // Query
-        var categories = dbContext.Categories.AsQueryable();
+        IQueryable<Category> categories = dbContext.Categories.AsQueryable();
 
         // Filtering
-        if (string.IsNullOrWhiteSpace(query) == false)
+        if (!string.IsNullOrWhiteSpace(query))
         {
             categories = categories.Where(x => x.Name.Contains(query));
         }
 
         // Sorting
-        if (string.IsNullOrWhiteSpace(sortBy) == false)
+        if (!string.IsNullOrWhiteSpace(sortBy))
         {
             if (string.Equals(sortBy, "Name", StringComparison.OrdinalIgnoreCase))
             {

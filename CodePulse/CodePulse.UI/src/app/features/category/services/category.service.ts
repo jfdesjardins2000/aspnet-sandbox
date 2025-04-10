@@ -16,8 +16,12 @@ export class CategoryService {
   constructor(private http: HttpClient, private cookieService:CookieService  ) { }
 
   getAllCategories(
-    query?: string, sortBy?: string, sortDirection?: string,
-    pageNumber?: number, pageSize?: number): Observable<CategoryModel[]> {
+    query?: string, 
+    sortBy?: string, 
+    sortDirection?: string,
+    pageNumber?: number, 
+    pageSize?: number): Observable<CategoryModel[]> {
+    
     let params = new HttpParams();
 
     if (query) {

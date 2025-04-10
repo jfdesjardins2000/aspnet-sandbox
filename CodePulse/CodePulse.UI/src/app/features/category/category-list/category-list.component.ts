@@ -55,6 +55,15 @@ export class CategoryListComponent implements OnInit {
     this.categories$ = this.categoryService.getAllCategories(undefined, sortBy, sortDirection);
   }
 
+
+  isFirstPage(): boolean {
+    return this.pageNumber === 1;
+  }
+  
+  isLastPage(): boolean {
+    return this.pageNumber === this.list.length;
+  }
+  
   getPage(pageNumber: number) {
     this.pageNumber = pageNumber;
 

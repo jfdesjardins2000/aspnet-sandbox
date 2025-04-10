@@ -2,8 +2,13 @@
     
     <h1 class="mt-3">Category List</h1>
 
-    <div class="d-flex justify-content-end mt-3">
-        <a [routerLink]="['/admin/categories/add']" class="btn btn-primary">Add Category</a>
+    <div class="d-flex justify-content-between mt-3">
+      <div class="d-flex">
+        <input type="text" class="form-control" #queryText>
+        <button type="button" class="btn btn-warning ms-3" (click)="onSearch(queryText.value)">Search</button>
+      </div>
+  
+      <a [routerLink]="['/admin/categories/add']" class="btn btn-primary">Add Category</a>
     </div>
 
     @if (categories$ | async; as categories) {
@@ -61,17 +66,24 @@
           </tbody>
         </table>
       
-        <nav aria-label="Page navigation example">
+        <nav aria-label="Page navigation" class="mt-5">
           <ul class="pagination">
-            <li class="page-item"><a class="page-link" (click)="getPrevPage()">Previous</a></li>
+            <!-- previous -->
+            <li class="page-item" [class.disabled]="isFirstPage()">
+              <a class="page-link pagination-pointer" (click)="!isFirstPage() && getPrevPage()">&laquo;</a>
+            </li>
       
             @for (item of list; track $index) {
               <li class="page-item">
-                <a class="page-link" (click)="getPage($index + 1)">{{$index + 1}}</a>
+                <a class="page-link page-link pagination-pointer" (click)="getPage($index + 1)">{{$index + 1}}</a>
               </li>
             }
-      
-            <li class="page-item"><a class="page-link" (click)="getNextPage()">Next</a></li>
+            <!-- next -->
+            <li class="page-item" [class.disabled]="isLastPage()">
+              <a class="page-link pagination-pointer" (click)="!isLastPage() && getNextPage()">&raquo;</a>
+            <!-- <li class="page-item" [class.disabled]="isLastPage()">
+              <a class="page-link" style="cursor: pointer" (click)="!isLastPage() && getNextPage()">Next</a>
+            </li> -->
           </ul>
         </nav>
       }
