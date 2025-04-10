@@ -23,3 +23,5 @@ Reader,Writer
 
 writer
 9740f16c-24a1-4224-a7be-1bb00b7c6892
+
+http://localhost:4200/admin/blogposts
