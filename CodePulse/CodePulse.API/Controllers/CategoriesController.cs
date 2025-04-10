@@ -19,30 +19,6 @@ namespace CodePulse.API.Controllers
             this.categoryRepository = categoryRepository;
         }
 
-        [HttpPost]
-        [Authorize(Roles = "Writer")]
-        public async Task<IActionResult> CreateCategory([FromBody] CreateCategoryRequestDto request)
-        {
-            // Map DTO to Domain Model
-            var category = new Category
-            {
-                Name = request.Name,
-                UrlHandle = request.UrlHandle
-            };
-
-            await categoryRepository.CreateAsync(category);
-
-            // Domain model to DTO
-            var response = new CategoryDto
-            {
-                Id = category.Id,
-                Name = category.Name,
-                UrlHandle = category.UrlHandle
-            };
-
-            return Ok(response);
-        }
-
         // GET: https://localhost:7015/api/Categories?query=html&sortBy=name&sortDirection=desc
         [HttpGet]
         //[Authorize(Roles = "Reader")]
@@ -94,11 +70,36 @@ namespace CodePulse.API.Controllers
             return Ok(response);
         }
 
+        [HttpPost]
+        [Authorize(Roles = "Writer")]
+        public async Task<IActionResult> CreateCategory([FromBody] CreateCategoryRequestDto request)
+        {
+            // Map DTO to Domain Model
+            var category = new Category
+            {
+                Name = request.Name,
+                UrlHandle = request.UrlHandle
+            };
+
+            await categoryRepository.CreateAsync(category);
+
+            // Domain model to DTO
+            var response = new CategoryDto
+            {
+                Id = category.Id,
+                Name = category.Name,
+                UrlHandle = category.UrlHandle
+            };
+
+            return Ok(response);
+        }
+
+
         // PUT: https://localhost:7015/api/categories/{id}
         [HttpPut]
         [Route("{id:Guid}")]
         [Authorize(Roles = "Writer")]
-        public async Task<IActionResult> EditCategory([FromRoute] Guid id, UpdateCategoryRequestDto request)
+        public async Task<IActionResult> UpdateCategory([FromRoute] Guid id, UpdateCategoryRequestDto request)
         {
             // Convert DTO to Domain Model
             var category = new Category

@@ -53,13 +53,9 @@ export class LoginComponent {
           });
   
           // Redirect back to Home
-          this.router.navigateByUrl('/');
-  
+          this.router.navigateByUrl('/');  
         }
       });
-
-
-
 
     } else {
       this.loginForm.markAllAsTouched();

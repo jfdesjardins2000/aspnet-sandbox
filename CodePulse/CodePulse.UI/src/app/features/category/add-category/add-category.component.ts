@@ -33,7 +33,7 @@ export class AddCategoryComponent implements OnDestroy {
     // Votre logique de soumission ici
     console.log(`name: ${this.model.name} urlHandle:${this.model.urlHandle}`);
     
-    this.addCategorySubscription = this.categoryService.addCategory(this.model)
+    this.addCategorySubscription = this.categoryService.createCategory(this.model)
     .subscribe({
       next: (response) => {
           console.log("Add Category Successfull!");

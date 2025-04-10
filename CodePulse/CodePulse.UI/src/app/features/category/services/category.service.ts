@@ -5,6 +5,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { CategoryModel } from '../models/category.model'; 
 import { UpdateCategoryRequestModel } from '../models/update-category-request.model';
 import { environment } from '../../../../environments/environment';
+import { CookieService } from 'ngx-cookie-service';
 
 
 @Injectable({
@@ -12,7 +13,7 @@ import { environment } from '../../../../environments/environment';
 })
 export class CategoryService {
 
-  constructor(private http: HttpClient ) { }
+  constructor(private http: HttpClient, private cookieService:CookieService  ) { }
 
   getAllCategories(
     query?: string, sortBy?: string, sortDirection?: string,
@@ -50,18 +51,37 @@ export class CategoryService {
     return this.http.get<number>(`${environment.apiBaseUrl}/api/categories/count`);
   }
 
-  addCategory(model: AddCategoryRequestModel): Observable<void>{
+  createCategory(model: AddCategoryRequestModel): Observable<void>{
     // return this.http.post<void>(`${environment.apiBaseUrl}/api/categories?addAuth=true`, model);
-    return this.http.post<void>(`${environment.apiBaseUrl}/api/categories`, model);
+    return this.http.post<void>(`${environment.apiBaseUrl}/api/categories?addAuth=true`, model);
   }
 
   updateCategory(id: string, updateCategoryRequest: UpdateCategoryRequestModel): Observable<CategoryModel> {
-    // return this.http.put<CategoryModel>(`${environment.apiBaseUrl}/api/categories/${id}?addAuth=true`, updateCategoryRequest);
-    return this.http.put<CategoryModel>(`${environment.apiBaseUrl}/api/categories/${id}`, updateCategoryRequest);
+    
+    //************************************************************* */
+    // Methode manuelle
+    // let auth = this.cookieService.get('Authorization');
+  
+    // // Vérifie si 'auth' existe avant de l'envoyer dans l'en-tête
+    // if (!auth) {
+    //   throw new Error('Authorization token is missing');
+    // }
+
+    // return this.http.put<CategoryModel>(`${environment.apiBaseUrl}/api/categories/${id}`, 
+    //   updateCategoryRequest, {
+    //     headers: {
+    //       'Authorization': auth
+    //     }
+    //   });
+    //************************************************************* */
+
+    // Methode avec Interceptors : src\app\core\interceptors\auth.interceptor.ts
+    return this.http.put<CategoryModel>(`${environment.apiBaseUrl}/api/categories/${id}?addAuth=true`,updateCategoryRequest);
+
   }
 
   deleteCategory(id: string): Observable<CategoryModel> {
     // return this.http.delete<CategoryModel>(`${environment.apiBaseUrl}/api/categories/${id}?addAuth=true`)
-    return this.http.delete<CategoryModel>(`${environment.apiBaseUrl}/api/categories/${id}`)
+    return this.http.delete<CategoryModel>(`${environment.apiBaseUrl}/api/categories/${id}?addAuth=true`)
   }
 }

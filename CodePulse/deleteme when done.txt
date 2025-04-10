@@ -2,8 +2,10 @@
     "Reader"
   ]
   
+
 User1@CodePulse.com
 User1@123
+Reader,Writer
 
 {
   "email": "User1@CodePulse.com",
@@ -18,3 +20,6 @@ User1@123
     "Reader"
   ]
 }
+
+writer
+9740f16c-24a1-4224-a7be-1bb00b7c6892

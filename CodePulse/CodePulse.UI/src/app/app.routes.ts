@@ -45,6 +45,7 @@ export const routes: Routes = [
   {
     path: 'admin/blogposts/:id',
     component: EditBlogpostComponent,
+    //canActivate
   }
 ];
 
