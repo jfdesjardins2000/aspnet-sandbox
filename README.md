@@ -15,17 +15,6 @@ Notions couvertes dans ce cours:
 - ASP NET MVC
 
 ---
-## asp-net-identity-v2
-### Cours UdeMy:[ASPNET Core Identity & Security]
-### Code original:[GitHub](https://github.com/aussiearef/asp-net-identity-v2?tab=readme-ov-file) 
-Notions couvertes dans ce cours
-- ASP.NET Core [Identity]
-- 2FA/MFA, 
-- [OAuth], 
-- Jason Web Token [JWT] , 
-- Microservices Security and [OWASP]
-
----
 ## CodePulse
 ### Cours UdeMy:[ANGULAR and ASP.NET Core REST API - Real World Application]
 ### Code original GitHub:[CodePulse.API](https://github.com/sameer8saini/CodePulse.API)
