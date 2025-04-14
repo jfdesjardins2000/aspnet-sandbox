@@ -24,9 +24,11 @@ export class AuthService {
   }
 
   setUser(user: UserModel): void {
-    this.$user.next(user);
-    localStorage.setItem('user-email', user.email);
-    localStorage.setItem('user-roles', user.roles.join(','));
+    if (typeof localStorage !== 'undefined') { // Vérifie si localStorage est disponible
+      this.$user.next(user);
+      localStorage.setItem('user-email', user.email);
+      localStorage.setItem('user-roles', user.roles.join(','));
+    }
   }
 
   user() : Observable<UserModel | undefined> {
@@ -34,23 +36,27 @@ export class AuthService {
   }
 
   getUser(): UserModel | undefined {
-    const email = localStorage.getItem('user-email');
-    const roles = localStorage.getItem('user-roles');
-
-    if (email && roles) {
-      const user: UserModel = {
-        email: email,
-        roles: roles.split(',')
-      };
-
-      return user;
+    if (typeof localStorage !== 'undefined') { // Vérifie si localStorage est disponible
+      const email = localStorage.getItem('user-email');
+      const roles = localStorage.getItem('user-roles');
+  
+      if (email && roles) {
+        const user: UserModel = {
+          email: email,
+          roles: roles.split(',')
+        };
+  
+        return user;
+      }
     }
-
+  
     return undefined;
   }
 
   logout(): void {
-    localStorage.clear();
+    if (typeof localStorage !== 'undefined') { // Vérifie si localStorage est disponible
+      localStorage.clear();
+    }
     this.cookieService.delete('Authorization', '/');
     this.$user.next(undefined);
   }
