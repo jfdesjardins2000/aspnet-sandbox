@@ -16,6 +16,7 @@ internal class Program
     private static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
+
         IConfigurationRoot configuration = ObtenirConfiguration();
         builder.Configuration.AddConfiguration(configuration);
 
@@ -27,6 +28,13 @@ internal class Program
         logger.Information("builder.Environment: {Env}", env);
         builder.Logging.AddSerilog(logger);
 
+        // Résoudre la chaîne de connexion SQLite
+        string contentRootPath = builder.Environment.ContentRootPath;
+        string relativeConnStr = builder.Configuration.GetConnectionString("CodePulseConnectionString");
+        string absoluteConnStr = $"Data Source={Path.Combine(contentRootPath, relativeConnStr)}";
+        logger.Information("SQLITE : {AbsoluteConnStr}", absoluteConnStr);
+
+
         // Add services to the container.
         builder.Services.AddControllers();
         builder.Services.AddHttpContextAccessor();
@@ -37,12 +45,9 @@ internal class Program
             options.SwaggerDoc("v1", new OpenApiInfo { Title = "CodePulse.API", Version = "v1", Description = $"Environnement: {builder.Environment.EnvironmentName}" });
         });
 
-        // Récupérer le chemin depuis appsettings.json
-        string? connectionString = builder.Configuration.GetConnectionString("CodePulseConnectionString");
-
         // Configurer la chaîne de connexion pour la BD SQLite Business
-        builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlite(connectionString));
-        builder.Services.AddDbContext<AuthDbContext>(options => options.UseSqlite(connectionString));
+        builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlite(absoluteConnStr));
+        builder.Services.AddDbContext<AuthDbContext>(options => options.UseSqlite(absoluteConnStr));
 
         builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
         builder.Services.AddScoped<IBlogPostRepository, BlogPostRepository>();
