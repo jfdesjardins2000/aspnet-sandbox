@@ -30,7 +30,7 @@
 # CodePulse.UI
 
 ### utilise
-* Angular 16 ou 18
+* Angular 18.2.0
 * Typscript
 * Boostrap CSS
 * Authentication et Authorization avec JSON web Tokens (JWT Tokens)
