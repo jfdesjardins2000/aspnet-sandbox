@@ -28,10 +28,6 @@ start "" "C:\Program Files\Git\git-cmd.exe"
 timeout /t %_waitSec% >nul
 
 rem ********************** VS2022 ********************************
-echo "Ouvrir VS2022 : La solution du Prof"
-start "" "%root%\prof\CodePulse.API-master\CodePulse.API.sln"
-timeout /t %_waitSec% >nul
-
 echo "Ouvrir ma solution VS2022 : CodePulse.sln"
 start "" "%root%\CodePulse\CodePulse.sln"
 timeout /t %_waitSec% >nul
