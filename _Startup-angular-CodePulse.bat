@@ -23,8 +23,8 @@ echo "Ouvrir dossier : CodePulse"
 explorer /e,"%root%\CodePulse"
 timeout /t %_waitSec% >nul
 
-echo "Ouvrir : git-cmd.exe"
-start "" "C:\Program Files\Git\git-cmd.exe"
+echo "Ouvrir : cmder.exe"
+start "" "cmder.exe"
 timeout /t %_waitSec% >nul
 
 rem ********************** VS2022 ********************************
