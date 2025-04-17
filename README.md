@@ -1,3 +1,8 @@
+
+> ⚠️ Ce dépôt est exclusivement utilisé à des fins pédagogiques.  
+> Aucune mise à jour de sécurité ne sera appliquée, et les dépendances peuvent être obsolètes ou vulnérables.
+
+
 # CodePulse
 ![ANGULAR and ASP.NET Core REST API - Real World Application](images/angular-and-aspnet-core-rest-api.png)
 
