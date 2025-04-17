@@ -1,0 +1,17 @@
+<div class="container mt-5">
+    <h1>À propos de {{ appName }}</h1>
+  
+    <p><strong>Version :</strong> {{ version }}</p>
+    <p><strong>Date de création :</strong> {{ createdDate }}</p>
+  
+    <h3>Équipe de développement</h3>
+    <ul>
+      <li *ngFor="let member of teamMembers">{{ member }}</li>
+    </ul>
+  
+    <p class="mt-4">
+      Code Pulse est une plateforme de blog pour les développeurs passionnés,
+      avec des fonctionnalités d'administration, publication et partage.
+    </p>
+  </div>
+  

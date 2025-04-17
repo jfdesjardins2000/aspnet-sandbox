@@ -18,6 +18,7 @@ import { HomeComponent } from './features/public/home/home.component';
 import { BlogDetailsComponent } from './features/public/blog-details/blog-details.component';
 import { LoginComponent } from './features/auth/login/login.component';
 import { AuthInterceptor } from './core/interceptors/auth.interceptor';
+import { AboutComponent } from './features/public/about/about/about.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { AuthInterceptor } from './core/interceptors/auth.interceptor';
     ImageSelectorComponent,
     HomeComponent,
     BlogDetailsComponent,
-    LoginComponent
+    LoginComponent,
+    AboutComponent
   ],
   imports: [
     BrowserModule,
