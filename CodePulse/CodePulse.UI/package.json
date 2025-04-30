@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
+    "clean": "npx rimraf dist",
     "start": "npx ng serve",
     "build": "npx ng build",
     "watch": "npx ng build --watch --configuration development",
